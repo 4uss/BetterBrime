@@ -1,0 +1,39 @@
+:root {
+    --bg-dark: #000000;
+    --bg-second-dark: #17191f;
+    --bg-second-accent-dark: #14161b;
+    --df-color: #313437;
+}
+body.dark-layout{
+    background-color: var(--bg-dark) !important;
+}
+.dark-layout .header-navbar {
+    background-color: var(--bg-second-dark) !important;
+}
+.dark-layout .main-menu {
+    background-color: var(--bg-second-dark) !important;
+}
+.dark-layout .main-menu-content .navigation-main {
+    background-color: var(--bg-second-dark) !important;
+}
+.column[data-v-10e4e594] {
+    background: var(--bg-second-dark) !important;
+}
+.dark-layout .dropdown-menu {
+    background-color: var(--bg-second-dark) !important;
+}
+.main-menu .navbar-header .navbar-brand .brand-text {
+    color: #ffffff !important;
+}
+.card[data-v-10e4e594], .dark-layout .card {
+    background-color: var(--bg-second-dark) !important;
+}
+.dark-layout .modal .modal-body, .dark-layout .modal .modal-content, .dark-layout .modal .modal-footer {
+    background-color: var(--bg-second-dark) !important;
+}
+.dark-layout .modal .modal-header, .dark-layout .modal .modal-header[class*=bg-] {
+    background-color: var(--bg-second-accent-dark) !important;
+}
+[dir] .border-primary, .border-primary {
+    border: 0 !important;
+}

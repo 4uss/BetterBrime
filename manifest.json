@@ -1,0 +1,23 @@
+{
+   "browser_action": {
+      "default_icon": {
+         "128": "logo.png"
+      },
+      "default_popup": "popup.html"
+   },
+   "content_scripts": [ {
+      "all_frames": true,
+      "js": [ "script.js" ],
+      "matches": [ "*://*.brimelive.com/*" ],
+      "run_at": "document_end"
+   } ],
+   "description": "Just a more emotes on BrimeLive and new design ;)",
+   "icons": {
+      "128": "logo.png"
+   },
+   "manifest_version": 2,
+   "name": "BetterBrime",
+   "permissions": [ "*://*.brimelive.com/*" ],
+   "version": "1.0",
+   "web_accessible_resources": ["brimelive.css" ]
+}
