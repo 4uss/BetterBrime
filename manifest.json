@@ -1,7 +1,10 @@
 {
    "browser_action": {
       "default_icon": {
-         "128": "logo.png"
+         "16": "assets/icons/16.png",
+         "32": "assets/icons/32.png",
+         "48": "assets/icons/48.png",
+         "128": "assets/icons/128.png"
       },
       "default_popup": "popup.html"
    },
@@ -11,13 +14,14 @@
       "matches": [ "*://*.brimelive.com/*" ],
       "run_at": "document_end"
    } ],
-   "description": "Just a more emotes on BrimeLive and new design ;)",
+   "description": "BetterBrime enhances Brime with new features, emotes, and more.",
    "icons": {
-      "128": "logo.png"
+      "48": "assets/icons/48.png",
+      "128": "assets/icons/128.png"
    },
    "manifest_version": 2,
    "name": "BetterBrime",
    "permissions": [ "*://*.brimelive.com/*" ],
-   "version": "1.0",
-   "web_accessible_resources": ["brimelive.css" ]
+   "version": "1.07.1",
+   "web_accessible_resources": ["brimelive.css", "assets/icons/128.png", "assets/icons/32.png" ]
 }

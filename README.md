@@ -5,7 +5,9 @@ Just a more emotes on BrimeLive and new design ;)
 
 # Links
 
-[Upload Emote](https://4uss.cyou/upload-emote)
+[Upload Emote](https://brime.4uss.cyou/upload)
+
+[Global Emotes](https://brime.4uss.cyou/dashboard)
 
 [Suggest](https://4uss.cyou/propozycje)
 
