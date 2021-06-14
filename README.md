@@ -1,7 +1,7 @@
 # BetterBrime
-Just a more emotes on BrimeLive and new design ;)
+BetterBrime enhances Brime with new features, emotes, and more.
 
-![preview](https://i.imgur.com/0W7QG5S.png)
+![preview](https://i.imgur.com/xNhQ8Uf.png)
 
 # Links
 
