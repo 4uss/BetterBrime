@@ -1,8 +1,8 @@
 :root {
     --bg-dark: #000000;
-    --bg-second-dark: #17191f;
+    --bg-second-dark: #18181b;
     --bg-second-accent-dark: #14161b;
-    --bg-darked: #12141b;
+    --bg-darked: #0e0e10;
     --bg-chat: #1e2129;
     --bg-chat-2: #252a2f;
     --df-color: #313437;
@@ -30,7 +30,8 @@
 }
 .emoteInfo .tooltiptext {
     visibility: hidden;
-    width: 120px;
+    width: auto;
+    min-width: 120px;
     background-color: var(--bg-dark);
     color: #fff;
     text-align: center;
@@ -39,7 +40,7 @@
     position: absolute;
     z-index: 1;
     bottom: 125%;
-    left: 0;
+    left: -35%;
     opacity: 0;
     transition: opacity 0.3s;
   }
@@ -84,4 +85,95 @@
 }
 #bb-pinned-highlight .message {
     word-break: break-word;
+}
+.emoji-picker__wrapper{
+    bottom: 62px !important;
+}
+.loader {
+    transition: visibility 2s;
+    margin-right: 0;
+    margin-left: 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99;
+    background: var(--top-dark);
+  }
+.loader-container {
+  transition-timing-function: ease-out;
+  margin: auto;
+}
+#bb-settings-container {
+    width: 100%;
+    display: block;
+}
+.settings-row{
+    position: absolute;
+    left: calc(40% - 45px);
+    top: 30%;
+    border: 2px solid var(--bg-second-accent-dark);
+    background: var(--bg-darked);
+    border-radius: 17px;
+}
+.theme-color{
+    color: #d2ffa8;
+}
+
+body.dark-layout.BetterBrime-Design{
+    background-color: var(--bg-darked) !important;
+}
+.BetterBrime-Design input[type="text"]#message{
+    background-color: var(--bg-darked) !important;
+}
+.BetterBrime-Design .header-navbar {
+    background-color: var(--bg-second-dark) !important;
+}
+.BetterBrime-Design .main-menu {
+    background-color: var(--bg-second-dark) !important;
+}
+.BetterBrime-Design .main-menu-content .navigation-main {
+    background-color: var(--bg-second-dark) !important;
+}
+.BetterBrime-Design .chat__column {
+    background: var(--bg-second-dark) !important;
+}
+.BetterBrime-Design .dropdown-menu {
+    background-color: var(--bg-second-dark) !important;
+}
+.BetterBrime-Design .main-menu .navbar-header .navbar-brand .brand-text {
+    color: #ffffff !important;
+}
+.BetterBrime-Design .card[data-v-10e4e594], .BetterBrime-Design .card {
+    background-color: var(--bg-second-dark) !important;
+}
+.BetterBrime-Design .modal .modal-body, .BetterBrime-Design .modal .modal-content, .BetterBrime-Design .modal .modal-footer {
+    background-color: var(--bg-second-dark) !important;
+}
+.BetterBrime-Design .modal .modal-header, .BetterBrime-Design .modal .modal-header[class*=bg-] {
+    background-color: var(--bg-second-accent-dark) !important;
+}
+.BetterBrime-Design [dir] .border-primary, .BetterBrime-Design .border-primary {
+    border: 0 !important;
+}
+.BetterBrime-Design .emoji-picker__category-name{
+    text-align: center!important;
+    color:#7d8285!important;
+    border-top: 1px solid #000;
+    box-shadow: 0 1px 0 rgb(255 255 255 / 5%) inset;
+    background-image: linear-gradient(to top,transparent,rgba(0,0,0,.5));
+}
+.BetterBrime-Design .emoji-picker__emojis h2.emoji-picker__category-name{
+    text-transform: none!important;
+}
+.BetterBrime-Design .emoji-picker * {
+    font-family: Roboto,sans-serif!important;
+}
+.BetterBrime-Design .emoji-picker__preview{
+    border:0;
+}
+.BetterBrime-Design .emoji-picker__search-not-found h2{
+    color: #7d8285!important;
+}
+.BetterBrime-Design .emoji-picker__emoji:hover{
+    background-color: var(--bg-second-dark);
 }

@@ -10,11 +10,12 @@
    },
    "content_scripts": [ {
       "all_frames": true,
-      "js": [ "script.js" ],
+      "js": [ "betterbrime.js" ],
       "matches": [ "*://*.brimelive.com/*" ],
       "run_at": "document_end"
    } ],
    "description": "BetterBrime enhances Brime with new features, emotes, and more.",
+   "homepage_url": "https://brime.4uss.cyou/",
    "icons": {
       "48": "assets/icons/48.png",
       "128": "assets/icons/128.png"
@@ -22,6 +23,7 @@
    "manifest_version": 2,
    "name": "BetterBrime",
    "permissions": [ "*://*.brimelive.com/*" ],
-   "version": "1.07.1",
-   "web_accessible_resources": ["brimelive.css", "assets/icons/128.png", "assets/icons/32.png" ]
+   "short_name": "BB",
+   "version": "1.13.1",
+   "web_accessible_resources": ["betterbrime.js", "brimelive.css", "assets/icons/128.png", "assets/icons/32.png", "assets/icons/16.png" ]
 }
