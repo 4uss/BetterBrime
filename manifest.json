@@ -24,6 +24,6 @@
    "name": "BetterBrime",
    "permissions": [ "*://*.brimelive.com/*" ],
    "short_name": "BB",
-   "version": "1.13.1",
+   "version": "1.14",
    "web_accessible_resources": ["betterbrime.js", "brimelive.css", "assets/icons/128.png", "assets/icons/32.png", "assets/icons/16.png" ]
 }

@@ -13,6 +13,12 @@ if (!localStorage.BBlChat) {
 if (!localStorage.BBdeletedM) {
     localStorage.BBdeletedM = 'false'
 };
+if (!localStorage.BBTimestamps) {
+    localStorage.BBTimestamps = 'false'
+};
+if (!localStorage.BBLightMode) {
+    localStorage.BBLightMode = 'false'
+};
 const site = document.querySelector('#cb-container')
 var statusBB = false
 var userData;
@@ -74,6 +80,9 @@ function betterBrime() {
     if (localStorage.BBcDesign === 'true') {
         document.body.classList.add("BetterBrime-Design");
         logging('site.design', ' Custom design enabled.')
+    }
+    if (localStorage.BBLightMode === 'true') {
+        document.body.classList.add("BetterBrime-Light");
     }
 
     var style = document.createElement("script")
@@ -257,6 +266,12 @@ function betterBrime() {
                         Array.from(node.querySelectorAll('span[style="font-size: 13px;"] a')).forEach(img => {
                             console.log(img)
                         })
+                        Array.from(node.querySelectorAll("span[style='margin-left: -3px;']")).forEach(img => {
+                            if(document.querySelector('div[aria-label="Current time"]').innerText === '00:00') return;
+                                if(localStorage.BBTimestamps === 'true' && splitcurrentUrl[4] !== 'chat'){
+                                        img.innerHTML = img.innerHTML.replace(new RegExp(img.innerHTML +'( |$)', 'g'), `<b class="timestamp">${document.querySelector('div[aria-label="Current time"]').innerText}</b> ${img.innerHTML}`);
+                                }
+                        })
                     })
                     if (localStorage.BBdeletedM === 'true') {
                     mutation.removedNodes.forEach(node => {
@@ -355,6 +370,13 @@ function betterBrime() {
                                     img.innerHTML = img.innerHTML.replace(new RegExp(imgurID[0] + '( |$)', 'g'), ` <img alt="${imgurID[1]}" class="chatBadge" style="height: 1.20em; vertical-align: middle;" src="https://static.4uss.cyou/project_4ussEmote/badges/${imgurID[1]}.png"> <strong style="color:#${imgurID[2]}">${imgurID[0]}: </strong>`);
                                 }
                             }
+                        })
+                        Array.from(node.querySelectorAll("span[style='margin-left: -3px;']")).forEach(img => {
+                            if(document.querySelector('div[aria-label="Current time"]').innerText === '00:00') return;
+
+                                if(localStorage.BBTimestamps === 'true' && splitcurrentUrl[4] !== 'chat'){
+                                        img.innerHTML = img.innerHTML.replace(new RegExp(img.innerHTML +'( |$)', 'g'), `<b class="timestamp">${document.querySelector('div[aria-label="Current time"]').innerText}</b> ${img.innerHTML}`);
+                                }
                         })
                     })
                     if (localStorage.BBdeletedM === 'true') {
@@ -564,6 +586,8 @@ function betterBrime() {
     newSettings('rBackground', 'Highlight message', 'fas fa-quote-right', 'normal')
     newSettings('lChat', 'Chat lines', 'fas fa-grip-lines', 'normal')
     newSettings('deletedM', 'Deleted Messages', 'far fa-trash-alt', 'normal')
+    newSettings('Timestamps', 'Timestamps', 'far fa-clock', 'normal')
+    newSettings('LightMode', 'Light Mode', 'fas fa-paint-roller', 'normal')
     newSettings('upload', 'Upload emote', 'fas fa-cloud', 'url', 'https://brime.4uss.cyou/upload')
     connectBetterBrime()
     var closeSettings = document.createElement("button");

@@ -7,6 +7,16 @@
     --bg-chat-2: #252a2f;
     --df-color: #313437;
 }
+.BetterBrime-Light {
+    --bg-dark: #DEE4E7 !important;
+    --bg-second-dark: #ffffff;
+    --bg-second-accent-dark: #efeff1;
+    --bg-darked: #DEE4E7;
+    --bg-chat: #e2e2e2;
+    --bg-chat-2: #e4e4e4;
+    --df-color: #313437;
+    --font-color: #000;
+}
 .autocomplete-items {
     flex: 1 1 auto;
     z-index: 99;
@@ -118,8 +128,10 @@
 .theme-color{
     color: #d2ffa8;
 }
-
-body.dark-layout.BetterBrime-Design{
+.BetterBrime-Light .theme-color{
+    color: #6f6f6f!important;
+}
+body.BetterBrime-Design{
     background-color: var(--bg-darked) !important;
 }
 .BetterBrime-Design input[type="text"]#message{
@@ -176,4 +188,100 @@ body.dark-layout.BetterBrime-Design{
 }
 .BetterBrime-Design .emoji-picker__emoji:hover{
     background-color: var(--bg-second-dark);
+}
+.timestamp{
+    font-family: Roboto,sans-serif!important;
+    color: #adadb8;
+    font-weight: lighter;
+}
+.BetterBrime-Design .menu-collapsed .main-menu:not(.expanded) .navigation-main li.active>a {
+    background: var(--bg-darked) !important;
+}
+
+.BetterBrime-Light .navbar-sticky .header-navbar.navbar-shadow {
+    box-shadow: none!important;
+}
+.BetterBrime-Light .main-menu .navbar-header .navbar-brand .brand-text{
+    color: var(--font-color)!important;
+}
+.BetterBrime-Light .chat-thread li{
+    color: var(--font-color)!important;
+}
+.BetterBrime-Light .main-menu-content .navigation-main li a {
+    color: var(--font-color)!important;
+}
+.BetterBrime-Light .channelName{
+    color: var(--font-color)!important;
+}
+.BetterBrime-Light .vod__title {
+    color: var(--font-color)!important;
+}
+.BetterBrime-Light .vod__category, .BetterBrime-Light .vod__date {
+    color: var(--font-color)!important;
+}
+.BetterBrime-Light .emoji-picker__category-name {
+    border-top: 1px solid #bdbdbd!important;
+    box-shadow: 0 1px 0 rgb(255 255 255 / 5%) inset;
+    background-image: none!important;
+}
+.BetterBrime-Light input[type="text"]#message {
+    border: 2px solid;
+}
+.BetterBrime-Light .btn-outline-primary {
+    border: 2px solid #bdbdbd!important;
+    background-color: var(--bg-darked) !important;
+}
+
+.BetterBrime-Light .settings-row {
+    border: 2px solid #bdbdbd;
+    color: var(--font-color);
+}
+.BetterBrime-Light .theme-color{
+    color: #6f6f6f;
+}
+.bb-settings-here h1{
+    color: var(--font-color)!important;
+}
+.BetterBrime-Light .nav-pills .nav-item .nav-link, .BetterBrime-Light .nav-tabs .nav-item .nav-link, .BetterBrime-Light .nav-tabs.nav-justified .nav-item .nav-link {
+    color: var(--font-color);
+}
+.BetterBrime-Light .header-navbar .navbar-container .nav .nav-item .nav-link{
+    color: var(--font-color);
+}
+.BetterBrime-Light .dropdown-menu .dropdown-item {
+    color: var(--font-color);
+}
+.BetterBrime-Light h1, .BetterBrime-Light h2, .BetterBrime-Light h3, .BetterBrime-Light h4, .BetterBrime-Light h5, .BetterBrime-Light h6 {
+    color: var(--font-color);
+}
+.BetterBrime-Light .custom-file-label:not(:focus), .BetterBrime-Light input.form-control:not(:focus), .BetterBrime-Light textarea.form-control:not(:focus) {
+    border-color: #b4b7bd !important;
+}
+.BetterBrime-Light .custom-file-label, .BetterBrime-Light input.form-control, .BetterBrime-Light textarea.form-control {
+    background-color: var(--bg-dark) !important;
+    color: var(--font-color);
+}
+.BetterBrime-Light .content-header-left .breadcrumbs-top .content-header-title {
+    color: #636363;
+}
+.BetterBrime-Light #title{
+    color: var(--font-color)!important;
+}
+.BetterBrime-Light .card {
+    box-shadow: none !important;
+}
+.BetterBrime-Light #streamTitle, .BetterBrime-Light #clipper, .BetterBrime-Light #category{
+    color: #636363 !important;
+}
+[dir] .BetterBrime-Light .menu-collapsed .main-menu:not(.expanded) .navigation-main li.active>a {
+    background: var(--bg-darked) !important;
+}
+.BetterBrime-Light a[title="Delete Message"] svg{
+    fill: rgb(0 0 0) !important;
+}
+.BetterBrime-Light li[style="background-color: rgba(255, 255, 255, 0.1); padding-top: 5px !important; padding-bottom: 5px !important; border-left: 4px solid #7367f0 ;"]{
+    background-color: rgb(0 0 0 / 10%) !important;
+}
+.BetterBrime-Light a[href="https://brime.4uss.cyou/upload"]{
+    color: #9147ff;
 }
