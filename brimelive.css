@@ -17,6 +17,9 @@
     --df-color: #313437;
     --font-color: #000;
 }
+.BetterBrime-Light body, .BetterBrime-Light *{
+    font-weight: bold!important;
+}
 .autocomplete-items {
     flex: 1 1 auto;
     z-index: 99;
@@ -126,7 +129,7 @@
     border-radius: 17px;
 }
 .theme-color{
-    color: #d2ffa8;
+    color: #553bde;
 }
 .BetterBrime-Light .theme-color{
     color: #6f6f6f!important;
@@ -199,7 +202,8 @@ body.BetterBrime-Design{
 }
 
 .BetterBrime-Light .navbar-sticky .header-navbar.navbar-shadow {
-    box-shadow: none!important;
+    box-shadow: 0 4px 24px 0 rgb(144 144 144 / 75%)!important;
+    border-bottom: 2px solid #b4b7bd;
 }
 .BetterBrime-Light .main-menu .navbar-header .navbar-brand .brand-text{
     color: var(--font-color)!important;
@@ -276,6 +280,9 @@ body.BetterBrime-Design{
 [dir] .BetterBrime-Light .menu-collapsed .main-menu:not(.expanded) .navigation-main li.active>a {
     background: var(--bg-darked) !important;
 }
+[dir] .BetterBrime-Design .menu-collapsed .main-menu:not(.expanded) .navigation-main li.active>a {
+    background: var(--bg-darked) !important;
+}
 .BetterBrime-Light a[title="Delete Message"] svg{
     fill: rgb(0 0 0) !important;
 }
@@ -284,4 +291,247 @@ body.BetterBrime-Design{
 }
 .BetterBrime-Light a[href="https://brime.4uss.cyou/upload"]{
     color: #9147ff;
+}
+.BetterBrime-Design ::selection {
+    color: #fff;
+    background: #7367f0;
+}
+.BetterBrime-Light ::selection{
+    color: var(--font-color)!important;
+}
+.brimesettings-select{
+    cursor: pointer;
+}
+.brimesettings-select:hover{
+    color: #fff;
+    border-bottom: 2px solid #ff9f43;
+}
+.BetterBrime-Light .brimesettings-select:hover{
+    color: var(--font-color)!important;
+}
+#Timestampstype{
+    color: #fff;
+}
+.BetterBrime-Light #Timestampstype{
+    color: var(--font-color)!important;
+}
+
+/* jquery ui */
+
+
+.ui-controlgroup-horizontal .ui-controlgroup-label.ui-widget-content {
+	border-right: none;
+}
+.ui-controlgroup-vertical .ui-controlgroup-label.ui-widget-content {
+	border-bottom: none;
+}
+.ui-icon,
+.ui-widget-content .ui-icon {
+	background-image: url("https://code.jquery.com/ui/1.12.1/themes/base/images/ui-icons_444444_256x240.png");
+}
+.ui-state-disabled,
+.ui-widget-content .ui-state-disabled,
+.ui-widget-header .ui-state-disabled {
+	opacity: .35;
+	filter:Alpha(Opacity=35); /* support: IE8 */
+	background-image: none;
+}
+.ui-state-highlight a,
+.ui-widget-content .ui-state-highlight a,
+.ui-widget-header .ui-state-highlight a {
+	color: #777620;
+}
+.ui-state-error,
+.ui-widget-content .ui-state-error,
+.ui-widget-header .ui-state-error {
+	border: 1px solid #f1a899;
+	background: #fddfdf;
+	color: #5f3f3f;
+}
+.ui-state-error a,
+.ui-widget-content .ui-state-error a,
+.ui-widget-header .ui-state-error a {
+	color: #5f3f3f;
+}
+.ui-state-error-text,
+.ui-widget-content .ui-state-error-text,
+.ui-widget-header .ui-state-error-text {
+	color: #5f3f3f;
+}
+.ui-priority-primary,
+.ui-widget-content .ui-priority-primary,
+.ui-widget-header .ui-priority-primary {
+	font-weight: bold;
+}
+.ui-priority-secondary,
+.ui-widget-content .ui-priority-secondary,
+.ui-widget-header .ui-priority-secondary {
+	opacity: .7;
+	filter:Alpha(Opacity=70); /* support: IE8 */
+	font-weight: normal;
+}
+.ui-state-highlight,
+.ui-widget-content .ui-state-highlight,
+.ui-widget-header .ui-state-highlight {
+	border: 1px solid #dad55e;
+	background: #fffa90;
+	color: #777620;
+}
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active,
+a.ui-button:active,
+.ui-button:active,
+.ui-button.ui-state-active:hover {
+	border: 1px solid #003eff;
+	background: #007fff;
+	font-weight: normal;
+	color: #ffffff;
+}
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus,
+.ui-button:hover,
+.ui-button:focus {
+	border: 1px solid #cccccc;
+	background: #ededed;
+	font-weight: normal;
+	color: #2b2b2b;
+}
+.ui-widget.ui-widget-content {
+	border: 1px solid #c5c5c5;
+}
+.ui-widget-content {
+    border-radius: 7px;
+	color: #333333;
+}
+.ui-widget-content a {
+	color: #333333;
+}
+.ui-icon,
+.ui-widget-content .ui-icon {
+	background-image: url("https://code.jquery.com/ui/1.12.1/themes/base/images/ui-icons_444444_256x240.png");
+}
+.ui-draggable .ui-dialog-titlebar {
+	cursor: move;
+}
+.ui-draggable-handle {
+	-ms-touch-action: none;
+	touch-action: none;
+}
+.ui-draggable-handle {
+	-ms-touch-action: none;
+	touch-action: none;
+}
+.ui-resizable {
+	position: relative;
+}
+.ui-resizable-handle {
+	position: absolute;
+	font-size: 0.1px;
+	display: block;
+	-ms-touch-action: none;
+	touch-action: none;
+}
+.ui-resizable-disabled .ui-resizable-handle,
+.ui-resizable-autohide .ui-resizable-handle {
+	display: none;
+}
+.ui-resizable-n {
+	cursor: n-resize;
+	height: 7px;
+	width: 100%;
+	top: -5px;
+	left: 0;
+}
+.ui-resizable-s {
+	cursor: s-resize;
+	height: 7px;
+	width: 100%;
+	bottom: -5px;
+	left: 0;
+}
+.ui-resizable-e {
+	cursor: e-resize;
+	width: 7px;
+	right: -5px;
+	top: 0;
+	height: 100%;
+}
+.ui-resizable-w {
+	cursor: w-resize;
+	width: 7px;
+	left: -5px;
+	top: 0;
+	height: 100%;
+}
+.ui-resizable-se {
+	cursor: se-resize;
+	width: 12px;
+	height: 12px;
+	right: 1px;
+	bottom: 1px;
+}
+.ui-resizable-sw {
+	cursor: sw-resize;
+	width: 9px;
+	height: 9px;
+	left: -5px;
+	bottom: -5px;
+}
+.ui-resizable-nw {
+	cursor: nw-resize;
+	width: 9px;
+	height: 9px;
+	left: -5px;
+	top: -5px;
+}
+.ui-resizable-ne {
+	cursor: ne-resize;
+	width: 9px;
+	height: 9px;
+	right: -5px;
+	top: -5px;
+}
+.ui-dialog .ui-resizable-n {
+	height: 2px;
+	top: 0;
+}
+.ui-dialog .ui-resizable-e {
+	width: 2px;
+	right: 0;
+}
+.ui-dialog .ui-resizable-s {
+	height: 2px;
+	bottom: 0;
+}
+.ui-dialog .ui-resizable-w {
+	width: 2px;
+	left: 0;
+}
+.ui-dialog .ui-resizable-se,
+.ui-dialog .ui-resizable-sw,
+.ui-dialog .ui-resizable-ne,
+.ui-dialog .ui-resizable-nw {
+	width: 7px;
+	height: 7px;
+}
+.ui-dialog .ui-resizable-se {
+	right: 0;
+	bottom: 0;
+}
+.ui-dialog .ui-resizable-sw {
+	left: 0;
+	bottom: 0;
+}
+.ui-dialog .ui-resizable-ne {
+	right: 0;
+	top: 0;
+}
+.ui-dialog .ui-resizable-nw {
+	left: 0;
+	top: 0;
 }
