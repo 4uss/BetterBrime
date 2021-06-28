@@ -10,7 +10,7 @@ Upload your own emotes!
 [BetterBri.me/Upload](https://betterbri.me/upload)
 
 Library of our emotes
-[BetterBri.me/Emotes](https://BetterBri.me/Emotes)
+[BetterBri.me/Emotes](https://BetterBri.me/emotes)
 
 Report bug or submit ideas
 [Github.com/4uss/BetterBrime/issues](https://github.com/4uss/BetterBrime/issues)
