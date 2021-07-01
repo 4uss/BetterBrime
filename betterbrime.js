@@ -6,6 +6,7 @@ if (!localStorage.BBTimestamps) {localStorage.BBTimestamps = 'false'};
 if (!localStorage.BBLightMode) {localStorage.BBLightMode = 'false'};
 if (!localStorage.BBFullScreen) {localStorage.BBFullScreen = 'false'};
 if (!localStorage.BBTimestampstype) {localStorage.BBTimestampstype = 'vod'};
+if (!localStorage.fullScreenPlusJSon) {localStorage.fullScreenPlusJSon = JSON.stringify({"opacity": "70", "backgroundColor": "#18181b", "fontSize": "13"})};
 if (!localStorage.getItem(`BBFullScreen-size`)) {
     let tmpobj = {w: 357,h: 518};
     localStorage.setItem(`BBFullScreen-size`, JSON.stringify(tmpobj));
@@ -18794,11 +18795,11 @@ var widgetsTooltip = $.ui.tooltip;
         .then(response => response.json())
         .then(data => emotesList = data)
         .then(logging('chat.emotes', 'Loaded emote set: Global Emotes'));
-    fetch('https://api.betterbri.me/v1/brime/badges.php')
+    fetch('https://api.betterbri.me/v1/brime/badges')
         .then(response => response.json())
         .then(data => badgeList = data)
         .then(logging('chat.badges', 'Loaded badges and assigned them to users.'));
-    fetch(`https://api.betterbri.me/v1/user/channel?nickname=${splitcurrentUrl[3]}`)
+    fetch(`https://api.betterbri.me/v1/user/channel?nickname=${splitcurrentUrl[3].toLowerCase()}`)
         .then(response => response.json())
         .then(function(data) {
             if(data.emotes === 'null' || data.emotes === null || data.emotes === ''){
@@ -18807,7 +18808,7 @@ var widgetsTooltip = $.ui.tooltip;
                 channelList = data.emotes.replace(/&quot;/g,'"')
             }
         })
-        .then(logging('chat.emotes', 'Loaded emote set: Channel: '+userData));
+        .then(logging('chat.emotes', 'Loaded emote set: Channel: '+splitcurrentUrl[3]));
 /*--------------------------------------------------------------------------------------------
                                     BetterBrime Design
 ---------------------------------------------------------------------------------------------*/
@@ -18890,7 +18891,9 @@ var widgetsTooltip = $.ui.tooltip;
 					document.querySelector('#player .plyr .plyr__controls').insertBefore(refresh, document.querySelector('#player .plyr .plyr__controls').childNodes[6]);
 				}
 
-                betterFullScreenPlus()
+				if(localStorage.BBFullScreen === 'true'){
+					betterFullScreenPlus()
+				}
 
                 document.querySelector('button[data-plyr="fullscreen"]').addEventListener("click", function(e) {
                     if(localStorage.BBFullScreen === 'true'){
@@ -19058,7 +19061,7 @@ var widgetsTooltip = $.ui.tooltip;
                                 var imgurID = emotesList[i].split('#');
                                 img.innerHTML = img.innerHTML.replace(new RegExp(imgurID[0] + '( |$)', 'g'), ` 
                                 <div class="emoteInfo">
-                                    <img alt="${imgurID[0]}" src="https://i.imgur.com/${imgurID[1]}.png" style="width: 32px;height: 32px;">
+                                    <img alt="${imgurID[0]}" src="https://i.imgur.com/${imgurID[1]}.png">
                                     <span class="tooltiptext p-1" style="text-align:center;">
                                         <img src="https://i.imgur.com/${imgurID[1]}.png"/><br/>
                                         <h4>${imgurID[0]}</h4>
@@ -19182,7 +19185,7 @@ var widgetsTooltip = $.ui.tooltip;
                                 var imgurID = emotesList[i].split('#');
                                 img.innerHTML = img.innerHTML.replace(new RegExp(imgurID[0] + '( |$)', 'g'), ` 
                                 <div class="emoteInfo">
-                                    <img alt="${imgurID[0]}" src="https://i.imgur.com/${imgurID[1]}.png" style="width: 32px;height: 32px;">
+                                    <img alt="${imgurID[0]}" src="https://i.imgur.com/${imgurID[1]}.png">
 
                                     <span class="tooltiptext p-1" style="text-align:center;">
                                         <img src="https://i.imgur.com/${imgurID[1]}.png"/><br/>
@@ -19357,89 +19360,146 @@ var widgetsTooltip = $.ui.tooltip;
             logging('recover', 'Generated settings button.')
         }
     });
-
     //Settings Body
     var settingsBG = document.createElement("div");
-    settingsBG.className = 'loader h-100 row text-center';
-    settingsBG.innerHTML = `<div class="settings-row p-5" id="bb-settings-here"><h1>BetterBrime Settings</h1><div class="m-1" style="background: var(--bg-second-dark);border-radius: 7px;}"><span class="brimesettings-select">Settings</span> </div></div>`;
+    settingsBG.innerHTML = `
+	<div id="header">
+    <span id="logo"><img height="32px" src="https://cdn.betterbri.me/badges/betterbrime.png"></span>
+    <ul class="nav">
+      <li id="im-bb-settings-nav">
+	  	<a onclick="document.getElementById('bb-settings-here').style.display = 'block';document.getElementById('bbFullScreenPlus').style.display = 'none';document.getElementById('bbChangelog').style.display = 'none';">Settings</a>
+	  </li>
+      <li id="im-bb-changelog-nav">
+	  	<a onclick="document.getElementById('bb-settings-here').style.display = 'none';document.getElementById('bbChangelog').style.display = 'block';document.getElementById('bbFullScreenPlus').style.display = 'none';">Changelog</a>
+	  </li>
+	  <li id="im-bb-FullScreenPlus-nav">
+	  	<a onclick="document.getElementById('bb-settings-here').style.display = 'none';document.getElementById('bbChangelog').style.display = 'none';document.getElementById('bbFullScreenPlus').style.display = 'block';">Fullscreen Plus</a>
+	  </li>
+    </ul>
+    <span id="close"></span>
+  	</div>
+	<div id="bb-settings-here" class="options-list">
+
+	</div>
+	<div id="bbChangelog" style="">
+    <h1>Changelog</h1>
+		<div class="bttv-changelog-releases">
+  			<h2>Version 1.18 (July 01, 2021)</h2>
+  			<p>- New design of settings<br/> - New functions in Fullscreen Plus<br/> - as always, made some bug fixes and improvements.<br/> - Changelog inside settings</p>
+
+		</div>
+  	</div>
+	<div id="bbFullScreenPlus" style="">
+
+			<div class="reset-button">
+				
+			</div>
+  	</div>
+	<div id="footer">
+    <span>BetterBrime © 2021</span>
+    <span style="float:right;">
+      <a href="https://twitter.com/betterbrime" target="_blank">Twitter</a> | 
+      <a href="https://github.com/4uss/BetterBrime/issues" target="_blank">Bug Report</a>
+    </span>
+  	</div>`;
     settingsBG.style.display = 'none';
     settingsBG.setAttribute("id", "bb-settings-container");
     document.body.appendChild(settingsBG);
 
     //Settings List
-    newSettings('cDesign', 'Custom Design', 'fas fa-fill', 'normal')
-    newSettings('rBackground', 'Pin Highlighted messages', 'fas fa-quote-right', 'normal')
-    newSettings('lChat', 'Chat lines', 'fas fa-grip-lines', 'normal')
-    newSettings('deletedM', 'Deleted Messages', 'far fa-trash-alt', 'normal')
+    newSettings('cDesign', 'Custom Design', 'BetterBrime provides own version of dark mode.')
+    newSettings('rBackground', 'Pin Highlighted messages', 'Pins your last ten highlighted messages above chat')
+    newSettings('lChat', 'Split Chat', 'Alternates backgrounds between messages in chat to improve readability')
+    newSettings('deletedM', 'Show Deleted Messages', 'Display deleted messages')
     timestampSettings()
-    newSettings('LightMode', 'Light Mode', 'fas fa-paint-roller', 'normal')
-    newSettings('FullScreen', 'Fullscreen Plus', 'fas fa-expand', 'normal')
-    newSettings('upload', 'Upload emote', 'fas fa-cloud', 'url', 'https://betterbri.me/upload')
+    newSettings('LightMode', 'Light Mode', 'BetterBrime provides own light mode.')
+    newSettings('FullScreen', 'Fullscreen Plus', 'Triggers fullscreen view of twitch stream with chat overlay')
     connectBetterBrime()
+	PPbackgroundColorChat()
+	PPfontSizeChat()
+	PPopacityChat()
 
-    //Close Button
-    var closeSettings = document.createElement("button");
-    closeSettings.className = 'btn btn-outline-primary mt-2 mr-1';
-    closeSettings.innerText = `Save & Close`;
-    closeSettings.onclick = function() {
-        document.querySelector('#bb-settings-container').style.display = 'none';
+    //Refresh Button
+    var refreshSettings = document.createElement("i");
+    refreshSettings.className = 'fas fa-times';
+    refreshSettings.onclick = function() {
+        //window.location.reload(true);
+		document.querySelector('#bb-settings-container').style.display = 'none';
         document.querySelector('#app').style.filter = 'none';
     };
-    document.getElementById('bb-settings-here').appendChild(closeSettings);
-    //Refresh Button
-    var refreshSettings = document.createElement("button");
-    refreshSettings.className = 'btn btn-outline-primary mt-2';
-    refreshSettings.innerText = `Save & Refresh`;
-    refreshSettings.onclick = function() {
-        window.location.reload(true);
-    };
-    document.getElementById('bb-settings-here').appendChild(refreshSettings);
+    document.getElementById('close').appendChild(refreshSettings);
 
     //Settings Generator
-    function newSettings(id, name, fa, type, url) {
-        let btn = document.createElement("span");
-        if(type === 'url'){
-            btn.innerHTML = `<a class="d-flex align-items-center" href="${url}" target="_blank"><i class="${fa} theme-color mr-1"></i> <b>${name}</b></a>`;
-        }else{
-            if (localStorage.getItem(`BB${id}`) === 'true') {
-                btn.innerHTML = `<p class="d-flex align-items-center"><i class="${fa} theme-color mr-1"></i> <b>${name}</b>&nbsp;<input id="${id}" type="checkbox" name="${id}" checked> </p>`;
-            } else {
-                btn.innerHTML = `<p class="d-flex align-items-center"><i class="${fa} theme-color mr-1"></i> <b>${name}</b>&nbsp;<input id="${id}" type="checkbox" name="${id}"> </p>`;
-            }
-            btn.addEventListener("click", function(e) {
-                if (localStorage.getItem(`BB${id}`) === 'true') {
-                    localStorage.setItem(`BB${id}`, 'false');
-                    document.getElementById(id).checked = false;
-                } else {
-                    localStorage.setItem(`BB${id}`, 'true');
-                    document.getElementById(id).checked = true;
-                }
-            });
+    function newSettings(id, name, description) {
+
+        let btn = document.createElement("div");
+		btn.className = 'option';
+        if (localStorage.getItem(`BB${id}`) === 'true') {
+                btn.innerHTML = `
+				<span style="font-weight:bold;font-size:14px;color:#D3D3D3;">${name}</span>
+				<span class="description"> — ${description}</span>
+				<div class="bb-switch">
+					<input id="${id}" type="checkbox" name="${id}" checked>
+				</div>`;
+        } else {
+                btn.innerHTML = `
+				<span style="font-weight:bold;font-size:14px;color:#D3D3D3;">${name}</span>
+				<span class="description"> — ${description}</span>
+				<div class="bb-switch">
+					<input id="${id}" type="checkbox" name="${id}">
+				</div>`;
         }
+        btn.addEventListener("click", function(e) {
+            if (localStorage.getItem(`BB${id}`) === 'true') {
+                localStorage.setItem(`BB${id}`, 'false');
+                document.getElementById(id).checked = false;
+            } else {
+                localStorage.setItem(`BB${id}`, 'true');
+                document.getElementById(id).checked = true;
+            }
+        });
         document.querySelector('#bb-settings-here').appendChild(btn);
     }
 
     //Type of setting
     function timestampSettings() {
-        let btn = document.createElement("span");
+
+		let btn = document.createElement("div");
+		btn.className = 'option';
+        if (localStorage.getItem(`BBTimestamps`) === 'true') {
+                btn.innerHTML = `
+				<span style="font-weight:bold;font-size:14px;color:#D3D3D3;">Timestamps</span>
+				<span class="description"> — Show time when message was sent.</span>
+				<div class="bb-switch">
+					<input id="Timestamps" type="checkbox" name="Timestamps" checked>
+				</div>`;
+        } else {
+                btn.innerHTML = `
+				<span style="font-weight:bold;font-size:14px;color:#D3D3D3;">Timestamps</span>
+				<span class="description"> — Show time when message was sent.</span>
+				<div class="bb-switch">
+					<input id="Timestamps" type="checkbox" name="Timestamps">
+				</div>`;
+        }
+        btn.addEventListener("click", function(e) {
             if (localStorage.getItem(`BBTimestamps`) === 'true') {
-                btn.innerHTML = `<p class="d-flex align-items-center"><i class="far fa-clock theme-color mr-1"></i> <b>Timestamps</b>&nbsp;<input id="Timestamps" type="checkbox" name="Timestamps" checked> </p>`;
+                localStorage.setItem(`BBTimestamps`, 'false');
+                document.getElementById('Timestamps').checked = false;
             } else {
-                btn.innerHTML = `<p class="d-flex align-items-center"><i class="far fa-clock theme-color mr-1"></i> <b>Timestamps</b>&nbsp;<input id="Timestamps" type="checkbox" name="Timestamps"> </p>`;
+                localStorage.setItem(`BBTimestamps`, 'true');
+                document.getElementById('Timestamps').checked = true;
             }
-            btn.addEventListener("click", function(e) {
-                if (localStorage.getItem(`BBTimestamps`) === 'true') {
-                    localStorage.setItem(`BBTimestamps`, 'false');
-                    document.getElementById('Timestamps').checked = false;
-                } else {
-                    localStorage.setItem(`BBTimestamps`, 'true');
-                    document.getElementById('Timestamps').checked = true;
-                }
-            });
+        });
         document.querySelector('#bb-settings-here').appendChild(btn);
 
-        let beCoool = document.createElement("span");
-        beCoool.innerHTML = `<p class="d-flex align-items-center" id="checkbox-here-timestamps"><i class="far fa-clock theme-color mr-1"></i> </p>`;
+        let beCoool = document.createElement("div");
+		beCoool.className = 'option';
+		beCoool.innerHTML = `
+		<span style="font-weight:bold;font-size:14px;color:#D3D3D3;">Type of Timestamps</span>
+		<span class="description"> — Choose which type of timestamps you want.</span>
+		<div class="bb-switch" id="checkbox-here-timestamps">
+			
+		</div>`;
         document.querySelector('#bb-settings-here').appendChild(beCoool);
 
         var timeSettings = document.createElement("select");
@@ -19456,14 +19516,66 @@ var widgetsTooltip = $.ui.tooltip;
 
     //Temporary Authorization
     function connectBetterBrime(){
-        let btn = document.createElement("span");
-            btn.innerHTML = `<br/><button class="btn btn-outline-warning"><i class="fas fa-link theme-color mr-1"></i> <b>Link Brime with BetterBrime</b></button><br/>`;
+        let btn = document.createElement("li");
+			btn.className = 'connectBetterBrime'
+            btn.innerHTML = `Link Brime with BetterBrime`;
             btn.addEventListener("click", function(e) {
-                window.open(`https://betterbri.me/auth#${userData}#${localStorage.accessToken}`, '_blank');
+                window.open(`https://betterbri.me/auth#${userData.toLowerCase()}#${localStorage.accessToken}`, '_blank');
             });
-        btn.className = "nav-item";
-        document.querySelector('#bb-settings-here').appendChild(btn);
+        document.querySelector('#bb-settings-container .nav').appendChild(btn);
     }
+
+	function PPbackgroundColorChat(){
+		let btn = document.createElement("div");
+		btn.className = 'option';
+        btn.innerHTML = `
+			<span style="font-weight:bold;font-size:14px;color:#D3D3D3;">Background Color</span>
+			<span class="description"> — Change color of chat background.</span>
+			<div class="bb-switch">
+				<input class="form-control" type="text" disabled value="${JSON.parse(localStorage.fullScreenPlusJSon).backgroundColor}" style="height: 2rem;background-color: #161616;"></input>
+			</div>`;
+        btn.addEventListener("change", function(e) {
+			localStorage.fullScreenPlusJSon = JSON.stringify({"opacity": JSON.parse(localStorage.fullScreenPlusJSon).opacity, "backgroundColor": this.querySelector('input[type="text"]').value, "fontSize": JSON.parse(localStorage.fullScreenPlusJSon).fontSize});
+        });
+        document.querySelector('#bbFullScreenPlus').appendChild(btn);
+		document.querySelector('#bbFullScreenPlus').insertBefore(btn, document.querySelector('#bbFullScreenPlus').childNodes[0]);
+	}
+
+	function PPfontSizeChat(){
+		let btn = document.createElement("div");
+		btn.className = 'option';
+        btn.innerHTML = `
+			<span style="font-weight:bold;font-size:14px;color:#D3D3D3;">Font Size</span>
+			<span class="description"> — Change font size of chat messages.</span>
+			<div class="bb-switch">
+				<input class="form-control" type="number" min="10" max="24" value="${JSON.parse(localStorage.fullScreenPlusJSon).fontSize}" style="height: 2rem;background-color: #161616;"></input>
+			</div>`;
+        btn.addEventListener("change", function(e) {
+
+			localStorage.fullScreenPlusJSon = JSON.stringify({"opacity": JSON.parse(localStorage.fullScreenPlusJSon).opacity, "backgroundColor": JSON.parse(localStorage.fullScreenPlusJSon).backgroundColor, "fontSize": this.querySelector('input[type="number"]').value});
+        });
+        document.querySelector('#bbFullScreenPlus').appendChild(btn);
+		document.querySelector('#bbFullScreenPlus').insertBefore(btn, document.querySelector('#bbFullScreenPlus').childNodes[0]);
+	}
+
+	function PPopacityChat(){
+		let btn = document.createElement("div");
+		btn.className = 'option';
+        btn.innerHTML = `
+			<span style="font-weight:bold;font-size:14px;color:#D3D3D3;">Opacity</span>
+			<span class="description"> — <b>${JSON.parse(localStorage.fullScreenPlusJSon).opacity}</b></span>
+			<div class="bb-switch">
+				<input class="form-control-range slider" type="range" step="1" min="10" max="99" value="${JSON.parse(localStorage.fullScreenPlusJSon).opacity}" style="height: 2rem;background-color: #161616;"></input>
+			</div>`;
+        btn.addEventListener("change", function(e) {
+			document.querySelector('#bb-fullscreen-plus-iframe').style.opacity = `.${this.querySelector('input[type="range"]').value}!important`;
+			document.querySelector('#bbFullScreenPlus .description b').innerText = this.querySelector('input[type="range"]').value;
+			
+			localStorage.fullScreenPlusJSon = JSON.stringify({"opacity": this.querySelector('input[type="range"]').value, "backgroundColor": JSON.parse(localStorage.fullScreenPlusJSon).backgroundColor, "fontSize": JSON.parse(localStorage.fullScreenPlusJSon).fontSize});
+        });
+        document.querySelector('#bbFullScreenPlus').appendChild(btn);
+		document.querySelector('#bbFullScreenPlus').insertBefore(btn, document.querySelector('#bbFullScreenPlus').childNodes[0]);
+	}
 /*--------------------------------------------------------------------------------------------
                                     BetterBrime Extensions
 ---------------------------------------------------------------------------------------------*/
@@ -19481,15 +19593,18 @@ var widgetsTooltip = $.ui.tooltip;
         });
         document.querySelector('#bb-pin-container').appendChild(btn);
     }
-    function gimmeTime(t){
-        var today = new Date();
-        if(t === 1){
-            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        }else{
-            var time = today.getHours() + ":" + today.getMinutes();
-        }
+    function gimmeTime(){
+		var d = new Date();
+
+		var hour =  d.getHours();
+		var minute =  d.getMinutes();
+		var second =  d.getSeconds();
+		
+		if (hour.toString().length < 2) hour = '0' + hour;
+		if (minute.toString().length < 2) minute = '0' + minute;
+		if (second.toString().length < 2) second = '0' + second;
     
-        return time;
+        return hour + ":" + minute;
     }
 /*--------------------------------------------------------------------------------------------
                                     BetterBrime Fullscreen Plus
@@ -19498,20 +19613,67 @@ function betterFullScreenPlus(){
 	if(splitcurrentUrl[3] === 'clips'){
         return;
     }else{
+			var css = document.createElement('style');
+			css.type = 'text/css';
+			css.appendChild(document.createTextNode(`
+			.column.chat__column, .bb-fullscreen-box{
+				background: ${JSON.parse(localStorage.fullScreenPlusJSon).backgroundColor}!important;
+				background-color: ${JSON.parse(localStorage.fullScreenPlusJSon).backgroundColor}!important;
+			}
+			.chatLine * {
+				font-size: ${JSON.parse(localStorage.fullScreenPlusJSon).fontSize}px!important;
+			}
+			.bb-fullscreen-box{
+				opacity: .${JSON.parse(localStorage.fullScreenPlusJSon).opacity}!important;
+			}`));
+			document.getElementsByTagName("head")[0].appendChild(css)
+
 			var settingsBG = document.createElement("div");
-			settingsBG.innerHTML = `<b>Fullscreen Plus #${splitcurrentUrl[3]}</b><iframe src="https://beta.brimelive.com/${splitcurrentUrl[3]}/chat" frameborder="0" scrolling="no" style="height: 90%;"></iframe><b>Resize Here</br>Double ESC to close</b>`;
-			settingsBG.style.position = 'absolute';
-			settingsBG.style.zIndex = '99999';
-			settingsBG.style.cursor = 'grab';
-			settingsBG.style.backgroundColor = 'var(--bg-darked)';
-			settingsBG.style.opacity = '0.7';
-			settingsBG.style.paddingBottom = '2rem!important';
-			settingsBG.style.display = 'none';
+			settingsBG.innerHTML = `
+			<div class="header">
+				<h3>Fullscreen Plus #${splitcurrentUrl[3]}</h3>
+			</div>
+			<div class="body">
+				<iframe src="https://beta.brimelive.com/${splitcurrentUrl[3]}/chat" frameborder="0" scrolling="no" style="height: 100%;"></iframe>
+			</div>`;
 			settingsBG.setAttribute("id", "bb-fullscreen-plus-iframe");
-			settingsBG.className = 'text-center ui-widget-content';
+			settingsBG.className = 'bb-fullscreen-box text-center';
 			document.querySelector('#player div').appendChild(settingsBG);
 			document.querySelector('#player div').insertBefore(settingsBG, document.querySelector('#player div').childNodes[0]);
 		
+			var fullSettingsButton = document.createElement("i");
+			fullSettingsButton.style.cursor = 'pointer';
+			fullSettingsButton.style.zIndex = '90';
+			fullSettingsButton.style.color = '#6057c5';
+			fullSettingsButton.style.fontSize = '24px';
+			fullSettingsButton.className = 'fas fa-cog ml-1';
+			fullSettingsButton.onclick = function() {
+				document.querySelector('#bb-settings-here').style.display = 'none';
+				document.querySelector('#bbFullScreenPlus').style.display = 'block';
+				document.querySelector('#bb-settings-container').style.display = 'block';
+				document.querySelector('#app').style.filter = 'blur(8px)';
+			};
+
+			document.querySelector('#bb-fullscreen-plus-iframe .header h3').appendChild(fullSettingsButton);
+
+			var createRestButton = document.createElement("button");
+			createRestButton.innerHTML = `Reset settings to default`;
+			createRestButton.className = 'btn btn-primary m-2';
+			createRestButton.type = 'button'
+			createRestButton.onclick = function() {
+					let tmpobj = {w: 357,h: 518};
+					localStorage.setItem(`BBFullScreen-size`, JSON.stringify(tmpobj));
+					let tmpobj1 = {x: 0,y: 0};
+					localStorage.setItem(`BBFullScreen-location`, JSON.stringify(tmpobj1));
+					localStorage.fullScreenPlusJSon = JSON.stringify({"opacity": "70", "backgroundColor": "#18181b", "fontSize": "13"});
+
+				document.querySelector(`#bb-fullscreen-plus-iframe`).style.left = '0px';
+				document.querySelector(`#bb-fullscreen-plus-iframe`).style.top = '0px';
+			
+				document.querySelector(`#bb-fullscreen-plus-iframe`).style.width = '357px';
+				document.querySelector(`#bb-fullscreen-plus-iframe`).style.height = '518px';
+			};
+			document.querySelector('.reset-button').appendChild(createRestButton);
 			
 			let position = JSON.parse(localStorage.getItem(`BBFullScreen-location`));
 			let vsize = JSON.parse(localStorage.getItem(`BBFullScreen-size`));

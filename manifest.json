@@ -14,15 +14,15 @@
       "matches": [ "*://*.brimelive.com/*" ]
    } ],
    "description": "BetterBrime enhances Brime with new features, emotes, and more.",
-   "homepage_url": "https://brime.4uss.cyou/",
+   "homepage_url": "https://betterbri.me/",
    "icons": {
       "48": "assets/icons/48.png",
       "128": "assets/icons/128.png"
    },
    "manifest_version": 2,
    "name": "BetterBrime",
-   "permissions": [ "*://*.brimelive.com/*", "*://betterbri.me/*"],
+   "permissions": [ "*://*.brimelive.com/*", "*://*.betterbri.me/*"],
    "short_name": "BB",
-   "version": "1.16.1",
+   "version": "1.18",
    "web_accessible_resources": ["betterbrime.js", "brimelive.css", "assets/icons/*", "assets/fonts/*", "assets/Jquery/*" ]
 }

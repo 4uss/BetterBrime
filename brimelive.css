@@ -102,23 +102,171 @@
 .emoji-picker__wrapper{
     bottom: 62px !important;
 }
-.loader {
-    transition: visibility 2s;
-    margin-right: 0;
-    margin-left: 0;
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 99;
-    background: var(--top-dark);
-  }
 .loader-container {
   transition-timing-function: ease-out;
   margin: auto;
 }
 #bb-settings-container {
-    width: 100%;
+    background-color: #1e1e1e;
+    border: 1px solid #000;
+    border-radius: 3px;
+    box-shadow: -1px 0 0 rgb(0 0 0 / 30%), -2px 0 0 rgb(0 0 0 / 20%), -3px 0 0 rgb(0 0 0 / 10%), 1px 0 0 rgb(0 0 0 / 30%), 2px 0 0 rgb(0 0 0 / 20%), 3px 0 0 rgb(0 0 0 / 10%), 0 -1px 0 rgb(0 0 0 / 30%), 0 -2px 0 rgb(0 0 0 / 20%), 0 -3px 0 rgb(0 0 0 / 10%), 0 1px 0 rgb(0 0 0 / 30%), 0 2px 0 rgb(0 0 0 / 20%), 0 3px 0 rgb(0 0 0 / 10%);
+    color: #d3d3d3;
+    height: 500px;
+    left: 50%;
+    margin-left: -400px;
+    margin-top: -250px;
+    position: absolute;
+    top: 50%;
+    width: 800px;
+    z-index: 9002;
+
     display: block;
+}
+#bb-settings-container #header{
+    background-color: #282828;
+    border-bottom: 1px solid #111;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    line-height: 42px;
+    width: 100%;
+}
+#bb-settings-container #logo {
+    font-size: 25px;
+    padding: 10px;
+    text-shadow: 1px 1px 3px #000;
+    vertical-align: bottom;
+}
+#bb-settings-container .nav {
+    display: inline-block;
+    list-style: none;
+    margin: 0 10px 0 0;
+    vertical-align: middle;
+}
+#bb-settings-container .nav>li {
+    float: left;
+    line-height: 18px;
+}
+#bb-settings-container .nav>li>a {
+    box-shadow: none;
+    color: #adafae;
+    font-family: Korolev-Bold,HelveticaNeue-CondensedBold,ArialNarrow-Bold,Helvetica Neue,Helvetica,Arial,sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    padding-bottom: 9px;
+    padding-left: 15px;
+    padding-right: 15px;
+    text-decoration: none;
+    text-shadow: 0 -1px 0 rgb(0 0 0 / 25%);
+}
+#bb-settings-container .nav>li.active a, #bb-settings-container .nav>li>a:hover {
+    border-bottom: 1px solid red;
+    color: #d3d3d3;
+}
+#bb-settings-container #close {
+    color: #fff;
+    filter: alpha(opacity=20);
+    float: right;
+    font-size: 30px;
+    opacity: .2;
+    position: absolute;
+    right: 20px;
+    text-shadow: 0 1px 0 #000;
+    top: 0;
+    vertical-align: center;
+    cursor: pointer;
+}
+#bb-settings-container #bttvSettings div {
+    box-sizing: content-box;
+}
+#bb-settings-container .option:nth-child(2n) {
+    background-color: #232323;
+}
+#bb-settings-container .option {
+    background-color: #1e1e1e;
+    border-bottom: 1px solid #000!important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.04)!important;
+    color: #999;
+    line-height: 30px;
+    padding: 3px 10px 2px!important;
+    position: relative;
+    width: calc(100% - 20px);
+}
+#bb-settings-container #footer {
+    background-color: #282828;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-top: 1px solid #111;
+    bottom: 0;
+    box-sizing: content-box;
+    color: #777;
+    padding: 5px;
+    position: absolute;
+    width: calc(100% - 10px);
+    z-index: inherit;
+}
+#bb-settings-container #bb-settings-here {
+    font: 12px Helvetica Neue,Helvetica,Arial,sans-serif;
+    height: 425px;
+    overflow-y: scroll;
+}
+#bb-settings-container #bbChangelog {
+    height: 425px;
+    overflow-y: scroll;
+    padding: 25px;
+    display: none;
+}
+#bb-settings-container h1 {
+    color: #d3d3d3;
+    font-size: 20px;
+}
+#bb-settings-container #bbChangelog h2 {
+    font-weight: 700;
+    margin-bottom: 5px;
+    margin-top: 20px;
+}
+.bb-switch {
+    text-align: center;;
+    background: rgba(0,0,0,.25);
+    border-radius: 3px;
+    box-shadow: inset 0 1px 3px rgb(0 0 0 / 30%), 0 1px rgb(255 255 255 / 10%);
+    height: 26px;
+    position: absolute;
+    right: 7px;
+    top: 4px;
+    width: 120px;
+}
+.connectBetterBrime{
+    border-bottom: 1px solid #7367f0;
+    cursor: pointer;
+}
+.bb-fullscreen-box{
+    position: absolute !important; 
+    z-index: 99999; 
+    cursor: grab; 
+    background-color: var(--bg-darked); 
+    opacity: 0.7; 
+    display: block; 
+    left: 199px; 
+    top: 118px; 
+    width: 327px; 
+    height: 561px;
+}
+.bb-fullscreen-box .body{
+    width: 100%;
+    height: 90%;
+}
+#bbFullScreenPlus{
+    display: none;
+}
+	
+.ui-icon {
+    width: 16px;
+    height: 16px;
+    background-position: -80px -224px !important;
+    background-image: url('https://cdn.betterbri.me/ui-icons_444444_256x240.png')
+    /*{iconsContent}*/
+    ;
 }
 .settings-row{
     position: absolute;
@@ -289,7 +437,7 @@ body.BetterBrime-Design{
 .BetterBrime-Light li[style="background-color: rgba(255, 255, 255, 0.1); padding-top: 5px !important; padding-bottom: 5px !important; border-left: 4px solid #7367f0 ;"]{
     background-color: rgb(0 0 0 / 10%) !important;
 }
-.BetterBrime-Light a[href="https://brime.4uss.cyou/upload"]{
+.BetterBrime-Light a[href="https://betterbri.me/upload"]{
     color: #9147ff;
 }
 .BetterBrime-Design ::selection {
@@ -315,7 +463,6 @@ body.BetterBrime-Design{
 .BetterBrime-Light #Timestampstype{
     color: var(--font-color)!important;
 }
-
 /* jquery ui */
 
 
@@ -324,10 +471,6 @@ body.BetterBrime-Design{
 }
 .ui-controlgroup-vertical .ui-controlgroup-label.ui-widget-content {
 	border-bottom: none;
-}
-.ui-icon,
-.ui-widget-content .ui-icon {
-	background-image: url("https://code.jquery.com/ui/1.12.1/themes/base/images/ui-icons_444444_256x240.png");
 }
 .ui-state-disabled,
 .ui-widget-content .ui-state-disabled,
@@ -410,10 +553,6 @@ a.ui-button:active,
 }
 .ui-widget-content a {
 	color: #333333;
-}
-.ui-icon,
-.ui-widget-content .ui-icon {
-	background-image: url("https://code.jquery.com/ui/1.12.1/themes/base/images/ui-icons_444444_256x240.png");
 }
 .ui-draggable .ui-dialog-titlebar {
 	cursor: move;
