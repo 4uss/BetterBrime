@@ -10,8 +10,8 @@
    },
    "content_scripts": [ {  
       "all_frames": true,
-      "js": [ "betterbrime.js" ],
-      "matches": [ "*://*.brimelive.com/*" ]
+      "js": [ "betterbrime.min.js" ],
+      "matches": [ "*://*.brimelive.com/*", "*://*.brime.tv/*" ]
    } ],
    "description": "BetterBrime enhances Brime with new features, emotes, and more.",
    "homepage_url": "https://betterbri.me/",
@@ -21,8 +21,8 @@
    },
    "manifest_version": 2,
    "name": "BetterBrime",
-   "permissions": [ "*://*.brimelive.com/*", "*://*.betterbri.me/*"],
+   "permissions": [ "*://*.brimelive.com/*", "*://*.betterbri.me/*", "*://*.brime.tv/*"],
    "short_name": "BB",
-   "version": "1.18",
-   "web_accessible_resources": ["betterbrime.js", "brimelive.css", "assets/icons/*", "assets/fonts/*", "assets/Jquery/*" ]
+   "version": "1.20.1",
+   "web_accessible_resources": ["betterbrime.min.js", "brimelive.css", "assets/icons/*", "assets/fonts/*", "assets/Jquery/*" ]
 }

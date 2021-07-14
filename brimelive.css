@@ -357,7 +357,11 @@ body.BetterBrime-Design{
     color: var(--font-color)!important;
 }
 .BetterBrime-Light .chat-thread li{
+    text-shadow: 2px 1px 10px #252525b8;
     color: var(--font-color)!important;
+}
+.BetterBrime-Light .streamTitle {
+    color: var(--font-color);
 }
 .BetterBrime-Light .main-menu-content .navigation-main li a {
     color: var(--font-color)!important;
