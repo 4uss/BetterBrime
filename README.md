@@ -1,7 +1,7 @@
 # BetterBrime
 BetterBrime enhances Brime with new features, emotes, and more.
 
-![preview](https://i.imgur.com/IXF46Q1.png)
+![preview](https://cdn.betterbri.me/betterbrime_full_white.png)
 
 # Helpful
 
@@ -13,6 +13,9 @@ Library of our emotes
 
 Check now, Is It Dow
 [status.BetterBri.me](https://status.betterbri.me)
+
+Your are Developer?
+[dev.BetterBri.me](https://dev.betterbri.me)
 
 Report bug or submit ideas
 [Github.com/4uss/BetterBrime/issues](https://github.com/4uss/BetterBrime/issues)
