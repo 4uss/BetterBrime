@@ -1,7 +1,9 @@
 /*!
  * BetterBrime
  * https://betterbri.me/
- *
+ * 
+ * Developer Console
+ * https://dev.betterbri.me/
  */
 if (!localStorage.BBcDesign) {localStorage.BBcDesign = 'true'};
 if (!localStorage.BBrBackground) {localStorage.BBrBackground = 'true'};
@@ -74,7 +76,7 @@ cssBetterBrime();
         var style = document.createElement("link")
         style.setAttribute("rel", "stylesheet")
         style.setAttribute("type", "text/css")
-        style.setAttribute("href", chrome.extension.getURL('brimelive.css?v=' + chrome.runtime.getManifest().version))
+        style.setAttribute("href", chrome.extension.getURL('betterbrime.css?v=' + chrome.runtime.getManifest().version))
         var head = document.getElementsByTagName('head')[0];
         if (!head) return;
         head.appendChild(style);
@@ -379,7 +381,7 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
                                     ${url}
                                     <span class="tooltiptext p-1" style="text-align:center;">
                                         <img src="${url}"/><br/>
-                                        <br/><small style="color:#0b67ff;">Image Preview</small>
+                                        <br/><small style="color:#03dac6;">Image Preview</small>
                                     </span>
                                 </div> `;
                             })
@@ -393,7 +395,7 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
                                         <img src="https://i.imgur.com/${emotesList[i].id}.png"/><br/>
                                         <h4>${emotesList[i].code}</h4>
                                         <img src="${chrome.extension.getURL('/assets/icons/16-blue.png')}">
-                                        <small style="color:#0b67ff;">Global</small>
+                                        <small style="color:#03dac6;">Global</small>
                                     </span>
                                 </div> `);
                             }
@@ -407,7 +409,7 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
                                             <img src="https://i.imgur.com/${dataEmote[i].imgur_id}.png"/><br/>
                                             <h4>${dataEmote[i].name}</h4>
                                             <img src="${chrome.extension.getURL('/assets/icons/16-blue.png')}">
-                                            <small style="color:#0b67ff;">Channel</small>
+                                            <small style="color:#03dac6;">Channel</small>
                                         </span>
                                     </div> `);
                                 }
@@ -498,7 +500,7 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
                                         ${img.href}
                                         <span class="tooltiptext p-1" style="text-align:center;left: 0;">
                                             <img src="${img.href}" class="img-fluid"/><br/>
-                                            <br/><small style="color:#0b67ff;">Image Preview</small>
+                                            <br/><small style="color:#03dac6;">Image Preview</small>
                                         </span>
                                     </div> `);
                             }
@@ -512,7 +514,7 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
                                         <img src="https://i.imgur.com/${emotesList[i].id}.png"/><br/>
                                         <h4>${emotesList[i].code}</h4>
                                         <img src="${chrome.extension.getURL('/assets/icons/16-blue.png')}">
-                                        <small style="color:#0b67ff;">Global</small>
+                                        <small style="color:#03dac6;">Global</small>
                                     </span>
                                 </div> `);
                             }
@@ -526,7 +528,7 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
                                             <img src="https://i.imgur.com/${dataEmote[i].imgur_id}.png"/><br/>
                                             <h4>${dataEmote[i].name}</h4>
                                             <img src="${chrome.extension.getURL('/assets/icons/16-blue.png')}">
-                                            <small style="color:#0b67ff;">Channel</small>
+                                            <small style="color:#03dac6;">Channel</small>
                                         </span>
                                     </div> `);
                                 }
@@ -1040,5 +1042,5 @@ function betterFullScreenPlus(){
 }
 
 function logging(w, m) {
-    console.log(`%cBetterBrime [%c${w}%c]:%c ${m}`, 'color:#0b67ff; font-weight:bold', '', 'color:#0b67ff; font-weight:bold', '')
+    console.log(`%cBetterBrime [%c${w}%c]:%c ${m}`, 'color:#03dac6; font-weight:bold', '', 'color:#03dac6; font-weight:bold', '')
 }
