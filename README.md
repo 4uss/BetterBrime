@@ -31,7 +31,7 @@ Report bug or submit ideas
 # Support & Issues
 <b>IMPORTANT</b>: Help me beeing efficient, please! I am developing BetterBrime in my free time for no money. Contribute to the project by posting complete, structured and helpful issues which I can reproduce quickly without asking for missing information.
 
-<a href="https://ko-fi.com/betterbrime" target="_blank"><img src="https://ko-fi.com/img/Kofi_Logo_Blue.svg" alt="ko-fi" width="1004px"></a>
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Y8Y85DDFG)
 
 # LICENSE
 [MIT](https://github.com/anKordii/BetterBrime/blob/main/LICENSE)
