@@ -9,6 +9,8 @@ Welcome to the BetterBrime developer documentation site. Here you’ll find the 
 ## Error Codes
 
 - 404 - Not Found. For example, the channel could not be found.
+- 500 - Internal Server Error.
+- 400 - equest Not Valid. Something is wrong with the request.
 
 ## Feedback and Assistance
 
