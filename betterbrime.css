@@ -160,7 +160,7 @@
     text-shadow: 0 -1px 0 rgb(0 0 0 / 25%);
 }
 #bb-settings-container .nav>li.active a, #bb-settings-container .nav>li>a:hover {
-    border-bottom: 1px solid red;
+    border-bottom: 1px solid #03dac6;
     color: #d3d3d3;
 }
 #bb-settings-container #close {
@@ -237,7 +237,7 @@
     width: 120px;
 }
 .connectBetterBrime{
-    border-bottom: 1px solid #7367f0;
+    border-bottom: 1px solid #03dac6;
     cursor: pointer;
 }
 .bb-fullscreen-box{
@@ -350,7 +350,7 @@ body.BetterBrime-Design{
 }
 
 .BetterBrime-Light .navbar-sticky .header-navbar.navbar-shadow {
-    box-shadow: 0 4px 24px 0 rgb(144 144 144 / 75%)!important;
+    box-shadow: 0 4px 24px 0 rgb(151 160 169 / 55%)!important;
     border-bottom: 2px solid #b4b7bd;
 }
 .BetterBrime-Light .main-menu .navbar-header .navbar-brand .brand-text{

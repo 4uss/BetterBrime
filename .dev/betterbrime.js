@@ -13,15 +13,9 @@ if (!localStorage.BBTimestamps) {localStorage.BBTimestamps = 'false'};
 if (!localStorage.BBLightMode) {localStorage.BBLightMode = 'false'};
 if (!localStorage.BBFullScreen) {localStorage.BBFullScreen = 'false'};
 if (!localStorage.BBTimestampstype) {localStorage.BBTimestampstype = 'vod'};
-if (!localStorage.fullScreenPlusJSon) {localStorage.fullScreenPlusJSon = JSON.stringify({"opacity": "70", "backgroundColor": "#18181b", "fontSize": "13"})};
-if (!localStorage.getItem(`BBFullScreen-size`)) {
-    let tmpobj = {w: 357,h: 518};
-    localStorage.setItem(`BBFullScreen-size`, JSON.stringify(tmpobj));
-}
-if (!localStorage.getItem(`BBFullScreen-location`)) {
-    let tmpobj = {x: 0,y: 0};
-    localStorage.setItem(`BBFullScreen-location`, JSON.stringify(tmpobj));
-}
+if (!localStorage.fullScreenPlusJSon) {localStorage.fullScreenPlusJSon = JSON.stringify({"opacity": "70", "backgroundColor": "#18181b", "backgroundColorBox": "#18181b", "fontSize": "13"})};
+if (!localStorage.getItem(`BBFullScreen-size`)) {let tmpobj = {w: 357,h: 518};localStorage.setItem(`BBFullScreen-size`, JSON.stringify(tmpobj));}
+if (!localStorage.getItem(`BBFullScreen-location`)) {let tmpobj = {x: 0,y: 0};localStorage.setItem(`BBFullScreen-location`, JSON.stringify(tmpobj));}
 
 const site = document.querySelector('#cb-container')
 var statusBB = false
@@ -32,7 +26,19 @@ var splitcurrentUrl = currentUrl.split('/');
 setInterval(() => {
     if (site) {
         if (!statusBB || !site.hasAttribute('betterbrime-loaded')) {
-            logging('core', 'Welcome in BetterBrime ' + chrome.runtime.getManifest().version);
+            console.log("%c0", `
+                    line-height: 105px;
+                    background-image: url("https://cdn.betterbri.me/betterbrime_full_white.png");
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-color: #141414;
+                    border-radius: 15px;
+                    margin-left: calc((50% - 150px) - 1ch);
+                    padding-left: 150px;
+                    color: transparent;
+                    padding-right: 150px;
+            `);
             statusBB = true
             if (document.querySelector('p[class="user-name font-weight-bolder mb-0"]')) {
                 userData = document.querySelector('p[class="user-name font-weight-bolder mb-0"]').innerText;
@@ -56,32 +62,9 @@ function betterBrime() {
     let channelList;
     const loadofexTime = gimmeTime();
 
-/*--------------------------------------------------------------------------------------------
-                                    BetterBrime Icons
----------------------------------------------------------------------------------------------*/
-    var style = document.createElement("link")
-    style.setAttribute("rel", "stylesheet")
-    style.setAttribute("type", "text/css")
-    style.setAttribute("href", chrome.extension.getURL('assets/fonts/fontawesome-all.min.css?v=' + chrome.runtime.getManifest().version))
-    var head = document.getElementsByTagName('head')[0];
-    if (!head) return;
-    head.appendChild(style);
-/*--------------------------------------------------------------------------------------------
-                                    BetterBrime CSS
----------------------------------------------------------------------------------------------*/
-//init
-cssBetterBrime();
 
-    function cssBetterBrime() {
-        var style = document.createElement("link")
-        style.setAttribute("rel", "stylesheet")
-        style.setAttribute("type", "text/css")
-        style.setAttribute("href", chrome.extension.getURL('betterbrime.css?v=' + chrome.runtime.getManifest().version))
-        var head = document.getElementsByTagName('head')[0];
-        if (!head) return;
-        head.appendChild(style);
-        logging('site.css', 'Loaded custom BetterBrime css.')
-    }
+    $("head").append(`<link rel='stylesheet' href='${document.querySelector('script[bb-name="ex-13-21-83"]').getAttribute("betterbrime-css")}' type='text/css'>`)
+    $("head").append(`<link rel='stylesheet' href='${document.querySelector('script[bb-name="ex-13-21-83"]').getAttribute("betterbrime-fonts")}' type='text/css'>`)
 /*--------------------------------------------------------------------------------------------
                             BetterBrime FullScreen Settings CSS
 ---------------------------------------------------------------------------------------------*/
@@ -90,10 +73,14 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
 				var css2 = document.createElement('style');
 				css2.type = 'text/css';
 				css2.appendChild(document.createTextNode(`
-				.column.chat__column, .bb-fullscreen-box{
+				.column.chat__column{
 					background: ${JSON.parse(localStorage.fullScreenPlusJSon).backgroundColor}!important;
 					background-color: ${JSON.parse(localStorage.fullScreenPlusJSon).backgroundColor}!important;
 				}
+                .bb-fullscreen-box{
+                    background: ${JSON.parse(localStorage.fullScreenPlusJSon).backgroundColorBox}!important;
+					background-color: ${JSON.parse(localStorage.fullScreenPlusJSon).backgroundColorBox}!important;
+                }
 				.chatLine * {
 					font-size: ${JSON.parse(localStorage.fullScreenPlusJSon).fontSize}px!important;
 				}
@@ -108,11 +95,9 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
 				css2.type = 'text/css';
 				css2.appendChild(document.createTextNode(`
 				.bb-fullscreen-box{
-					background: ${JSON.parse(localStorage.fullScreenPlusJSon).backgroundColor}!important;
-					background-color: ${JSON.parse(localStorage.fullScreenPlusJSon).backgroundColor}!important;
-				}
-				.bb-fullscreen-box{
-					opacity: .${JSON.parse(localStorage.fullScreenPlusJSon).opacity}!important;
+					background: ${JSON.parse(localStorage.fullScreenPlusJSon).backgroundColorBox}!important;
+					background-color: ${JSON.parse(localStorage.fullScreenPlusJSon).backgroundColorBox}!important;
+                    opacity: .${JSON.parse(localStorage.fullScreenPlusJSon).opacity}!important;
 				}`));
 				var head2 = document.getElementsByTagName("head")[0]
 				if (!head2) return;
@@ -191,7 +176,7 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
                 target.setAttribute('data-maked-observer', '1')
             }
         } else {
-            logging('chat', "Could not find chat element.")
+            //logging('chat', "Could not find chat element.")
             chatExist = false
         }
     }, 1000)
@@ -203,24 +188,23 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
             if (!playerexist || !target.hasAttribute('data-maked-observer')) {
                 playerexist = true
                 target.setAttribute('data-maked-observer', '1')
-
-                let refresh = document.createElement("button");
-                refresh.classList = 'plyr__controls__item plyr__control';
-                refresh.type = 'button';
-                refresh.innerHTML = `<i class="fas fa-redo"></i>`;
-                refresh.addEventListener("click", function(e) {
-                        document.getElementById('stream-video').src = document.getElementById('stream-video').src;
-                        setTimeout(() => {
-                            console.clear()
-                            logging('core', 'Console cleared.')
-                        }, 1000);
-                });
-				if(splitcurrentUrl[3] === 'clips'){
-
-				}else{
+                
+                    let refresh = document.createElement("button");
+                    refresh.classList = 'plyr__controls__item plyr__control';
+                    refresh.setAttribute('id', 'bb-refresh')
+                    refresh.type = 'button';
+                    refresh.innerHTML = `<i class="fas fa-redo"></i>`;
+                    refresh.addEventListener("click", function(e) {
+                            document.getElementById('stream-video').src = document.getElementById('stream-video').src;
+                            setTimeout(() => {
+                                console.clear()
+                                logging('core', 'Console cleared.')
+                            }, 1000);
+                    });
+                if(!document.querySelector('#bb-refresh') && splitcurrentUrl[3] != 'clips'){
 					document.querySelector('#player .plyr .plyr__controls').appendChild(refresh);
 					document.querySelector('#player .plyr .plyr__controls').insertBefore(refresh, document.querySelector('#player .plyr .plyr__controls').childNodes[6]);
-				}
+                }
 
 				if(localStorage.BBFullScreen === 'true'){
 					betterFullScreenPlus()
@@ -306,20 +290,24 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
                     document.querySelector('.emoji-picker__search').style.color = '#7d8285';
                 }
 
-				let settingsBB2 = document.createElement("button");
-                settingsBB2.setAttribute("id", "bb-settings");
-                settingsBB2.className = 'btn btn-outline-primary';
-                settingsBB2.style.padding = '10px';
-                settingsBB2.innerHTML = `<img src="${chrome.extension.getURL('/assets/icons/16-purple.png?v=' + chrome.runtime.getManifest().version)}" class="feather-more-horizontal">`;
-                settingsBB2.type = 'button';
-                settingsBB2.onclick = function() {
-                    document.querySelector('#bb-settings-container').style.display = 'block';
-                    document.querySelector('#app').style.filter = 'blur(8px)';
-                };
-                document.querySelector('.input-group-append').appendChild(settingsBB2);
+                if(!document.querySelector('#bb-settings2')){
+
+                    let settingsBB2 = document.createElement("button");
+                    settingsBB2.setAttribute("id", "bb-settings2");
+                    settingsBB2.className = 'btn btn-outline-primary';
+                    settingsBB2.style.padding = '10px';
+                    settingsBB2.innerHTML = `<img src="https://cdn.betterbri.me/icons/16-purple.png" class="feather-more-horizontal">`;
+                    settingsBB2.type = 'button';
+                    settingsBB2.onclick = function() {
+                        document.querySelector('#bb-settings-container').style.display = 'block';
+                        document.querySelector('#app').style.filter = 'blur(8px)';
+                    };
+                    document.querySelector('.input-group-append').appendChild(settingsBB2);
+                }
+
             }
         } else {
-            logging('core', "Can't find default emote picker.")
+            //logging('core', "Can't find default emote picker.")
             emojiExist = false
         }
     }, 1000)
@@ -394,7 +382,7 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
                                     <span class="tooltiptext p-1" style="text-align:center;">
                                         <img src="https://i.imgur.com/${emotesList[i].id}.png"/><br/>
                                         <h4>${emotesList[i].code}</h4>
-                                        <img src="${chrome.extension.getURL('/assets/icons/16-blue.png')}">
+                                        <img src="https://cdn.betterbri.me/icons/16.png">
                                         <small style="color:#03dac6;">Global</small>
                                     </span>
                                 </div> `);
@@ -408,7 +396,7 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
                                         <span class="tooltiptext p-1" style="text-align:center;">
                                             <img src="https://i.imgur.com/${dataEmote[i].imgur_id}.png"/><br/>
                                             <h4>${dataEmote[i].name}</h4>
-                                            <img src="${chrome.extension.getURL('/assets/icons/16-blue.png')}">
+                                            <img src="https://cdn.betterbri.me/icons/16.png">
                                             <small style="color:#03dac6;">Channel</small>
                                         </span>
                                     </div> `);
@@ -513,7 +501,7 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
                                     <span class="tooltiptext p-1" style="text-align:center;">
                                         <img src="https://i.imgur.com/${emotesList[i].id}.png"/><br/>
                                         <h4>${emotesList[i].code}</h4>
-                                        <img src="${chrome.extension.getURL('/assets/icons/16-blue.png')}">
+                                        <img src="https://cdn.betterbri.me/icons/16.png">
                                         <small style="color:#03dac6;">Global</small>
                                     </span>
                                 </div> `);
@@ -527,7 +515,7 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
                                         <span class="tooltiptext p-1" style="text-align:center;">
                                             <img src="https://i.imgur.com/${dataEmote[i].imgur_id}.png"/><br/>
                                             <h4>${dataEmote[i].name}</h4>
-                                            <img src="${chrome.extension.getURL('/assets/icons/16-blue.png')}">
+                                            <img src="https://cdn.betterbri.me/icons/16.png">
                                             <small style="color:#03dac6;">Channel</small>
                                         </span>
                                     </div> `);
@@ -666,21 +654,18 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
                                     BetterBrime Settings
 ---------------------------------------------------------------------------------------------*/
 
-    if(splitcurrentUrl[4] === 'chat'){
-        return;
-    }else{
+    if(!document.querySelector('#bb-settings') && splitcurrentUrl[4] != 'chat'){
         let settingsBB = document.createElement("li");
         settingsBB.setAttribute("id", "bb-settings");
 		settingsBB.style.borderBottom = '1px solid #3b4253';
         settingsBB.className = 'presentation';
-        settingsBB.innerHTML = `<a class="dropdown-item d-flex align-items-center" role="menuitem" target="_self"><img src="${chrome.extension.getURL('/assets/icons/16-dark.png')}" class="mr-50 feather feather-bar-chart-2"/> <span>BetterBrime</span></a>`;
+        settingsBB.innerHTML = `<a class="dropdown-item d-flex align-items-center" role="menuitem" target="_self"><img src="https://cdn.betterbri.me/icons/16-dark.png" class="mr-50 feather feather-bar-chart-2"/> <span>BetterBrime</span></a>`;
         settingsBB.onclick = function() {
             document.querySelector('#bb-settings-container').style.display = 'block';
             document.querySelector('#app').style.filter = 'blur(8px)';
         };
         document.querySelector('li[class="nav-item b-nav-dropdown dropdown dropdown-user"] ul').appendChild(settingsBB);
         document.querySelector('li[class="nav-item b-nav-dropdown dropdown dropdown-user"] ul').insertBefore(settingsBB, document.querySelector('li[class="nav-item b-nav-dropdown dropdown dropdown-user"] ul').childNodes[0]);
-    }
 
     //Backups settings
     document.querySelector('li[class="nav-item b-nav-dropdown dropdown dropdown-user"] a[role="button"]').addEventListener("click", function(e) {
@@ -689,7 +674,7 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
             settingsBB.setAttribute("id", "bb-settings");
 			settingsBB.style.borderBottom = '1px solid #3b4253';
             settingsBB.className = 'presentation';
-            settingsBB.innerHTML = `<a class="dropdown-item d-flex align-items-center" role="menuitem" target="_self"><img src="${chrome.extension.getURL('/assets/icons/16-dark.png')}" class="mr-50 feather feather-bar-chart-2"/> <span>BetterBrime</span></a>`;
+            settingsBB.innerHTML = `<a class="dropdown-item d-flex align-items-center" role="menuitem" target="_self"><img src="https://cdn.betterbri.me/icons/16-dark.png" class="mr-50 feather feather-bar-chart-2"/> <span>BetterBrime</span></a>`;
             settingsBB.onclick = function() {
                 document.querySelector('#bb-settings-container').style.display = 'block';
                 document.querySelector('#app').style.filter = 'blur(8px)';
@@ -699,11 +684,12 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
             logging('recover', 'Generated settings button.')
         }
     });
+    }
     //Settings Body
     var settingsBG = document.createElement("div");
     settingsBG.innerHTML = `
 	<div id="header">
-    <span id="logo"><img height="32px" src="https://cdn.betterbri.me/badges/betterbrime.png"></span>
+    <span id="logo"><img height="32px" src="https://cdn.betterbri.me/icons/128.png"></span>
     <ul class="nav">
       <li id="im-bb-settings-nav">
 	  	<a onclick="document.getElementById('bb-settings-here').style.display = 'block';document.getElementById('bbFullScreenPlus').style.display = 'none';document.getElementById('bbChangelog').style.display = 'none';">Settings</a>
@@ -723,6 +709,9 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
 	<div id="bbChangelog" style="">
     <h1>Changelog</h1>
 		<div class="bttv-changelog-releases">
+            <h2>Version 1.21 (July 26, 2021)</h2>
+  			<p>- Fullscreen Plus Separate backgrounds <ul><li>Change Background of chat</li><li>Change Background of fullscreen box</li></ul><br/>- Automatic update emotes every 10 minutes<br/>- Updated logo inside settings</br>- Fixed issue with duplicated settings buttons</br>- Tutorial how to link account <a href="https://youtu.be/DjMZzxcHOIc" target="_blank">YouTube</a></p>
+
         	<h2>Version 1.20 (July 13, 2021)</h2>
   			<p>- Channel emotes Api Updated<br/>- Added text-shadow to messages in Light Mode<br/>- Stream Titles are now black on Light Mode<br/>- Started minified javascript files</p>
 
@@ -746,6 +735,7 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
 	<div id="footer">
     <span>BetterBrime © 2021</span>
     <span style="float:right;">
+      <a href="https://ko-fi.com/betterbrime" target="_blank" style="color:#ffa6e0;">Buy Ko-fi</a> | 
       <a href="https://twitter.com/betterbrime" target="_blank">Twitter</a> | 
       <a href="https://github.com/4uss/BetterBrime/issues" target="_blank">Bug Report</a>
     </span>
@@ -762,8 +752,8 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
     timestampSettings()
     newSettings('LightMode', 'Light Mode', 'BetterBrime provides own light mode.')
     newSettings('FullScreen', 'Fullscreen Plus', 'Triggers fullscreen view of twitch stream with chat overlay')
-    connectBetterBrime()
 	PPbackgroundColorChat()
+    PPbackgroundColorBoxChat()
 	PPfontSizeChat()
 	PPopacityChat()
 	var createRestButton = document.createElement("button");
@@ -775,7 +765,7 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
 			localStorage.setItem(`BBFullScreen-size`, JSON.stringify(tmpobj));
 			let tmpobj1 = {x: 0,y: 0};
 			localStorage.setItem(`BBFullScreen-location`, JSON.stringify(tmpobj1));
-			localStorage.fullScreenPlusJSon = JSON.stringify({"opacity": "70", "backgroundColor": "#18181b", "fontSize": "13"});
+			localStorage.fullScreenPlusJSon = JSON.stringify({"opacity": "70", "backgroundColor": "#18181b", "fontSize": "13", "backgroundColorBox": "#18181b"});
 
 		document.querySelector(`#bb-fullscreen-plus-iframe`).style.left = '0px';
 		document.querySelector(`#bb-fullscreen-plus-iframe`).style.top = '0px';
@@ -881,28 +871,33 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
         document.getElementById('checkbox-here-timestamps').appendChild(timeSettings);
     }
 
-    //Temporary Authorization
-    function connectBetterBrime(){
-        let btn = document.createElement("li");
-			btn.className = 'connectBetterBrime'
-            btn.innerHTML = `Link Brime with BetterBrime`;
-            btn.addEventListener("click", function(e) {
-                window.open(`https://betterbri.me/auth#${userData.toLowerCase()}#${localStorage.accessToken}`, '_blank');
-            });
-        document.querySelector('#bb-settings-container .nav').appendChild(btn);
-    }
-
-	function PPbackgroundColorChat(){
+	function PPbackgroundColorBoxChat(){
 		let btn = document.createElement("div");
 		btn.className = 'option';
         btn.innerHTML = `
-			<span style="font-weight:bold;font-size:14px;color:#D3D3D3;">Background Color</span>
+			<span style="font-weight:bold;font-size:14px;color:#D3D3D3;">Box Background Color</span>
+			<span class="description"> — Change color of background box which chat is inside.</span>
+			<div class="bb-switch">
+				<input class="form-control" type="text" value="${JSON.parse(localStorage.fullScreenPlusJSon).backgroundColorBox}" style="height: 2rem;background-color: #161616;"></input>
+			</div>`;
+        btn.addEventListener("change", function(e) {
+			localStorage.fullScreenPlusJSon = JSON.stringify({"opacity": JSON.parse(localStorage.fullScreenPlusJSon).opacity, "backgroundColor": JSON.parse(localStorage.fullScreenPlusJSon).backgroundColor, "backgroundColorBox": this.querySelector('input[type="text"]').value, "fontSize": JSON.parse(localStorage.fullScreenPlusJSon).fontSize});
+        });
+        document.querySelector('#bbFullScreenPlus').appendChild(btn);
+		document.querySelector('#bbFullScreenPlus').insertBefore(btn, document.querySelector('#bbFullScreenPlus').childNodes[0]);
+	}
+
+    function PPbackgroundColorChat(){
+		let btn = document.createElement("div");
+		btn.className = 'option';
+        btn.innerHTML = `
+			<span style="font-weight:bold;font-size:14px;color:#D3D3D3;">Chat Background Color</span>
 			<span class="description"> — Change color of chat background.</span>
 			<div class="bb-switch">
 				<input class="form-control" type="text" value="${JSON.parse(localStorage.fullScreenPlusJSon).backgroundColor}" style="height: 2rem;background-color: #161616;"></input>
 			</div>`;
         btn.addEventListener("change", function(e) {
-			localStorage.fullScreenPlusJSon = JSON.stringify({"opacity": JSON.parse(localStorage.fullScreenPlusJSon).opacity, "backgroundColor": this.querySelector('input[type="text"]').value, "fontSize": JSON.parse(localStorage.fullScreenPlusJSon).fontSize});
+			localStorage.fullScreenPlusJSon = JSON.stringify({"opacity": JSON.parse(localStorage.fullScreenPlusJSon).opacity, "backgroundColor": this.querySelector('input[type="text"]').value, "backgroundColorBox": JSON.parse(localStorage.fullScreenPlusJSon).backgroundColorBox, "fontSize": JSON.parse(localStorage.fullScreenPlusJSon).fontSize});
         });
         document.querySelector('#bbFullScreenPlus').appendChild(btn);
 		document.querySelector('#bbFullScreenPlus').insertBefore(btn, document.querySelector('#bbFullScreenPlus').childNodes[0]);
@@ -919,7 +914,7 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
 			</div>`;
         btn.addEventListener("change", function(e) {
 
-			localStorage.fullScreenPlusJSon = JSON.stringify({"opacity": JSON.parse(localStorage.fullScreenPlusJSon).opacity, "backgroundColor": JSON.parse(localStorage.fullScreenPlusJSon).backgroundColor, "fontSize": this.querySelector('input[type="number"]').value});
+			localStorage.fullScreenPlusJSon = JSON.stringify({"opacity": JSON.parse(localStorage.fullScreenPlusJSon).opacity, "backgroundColor": JSON.parse(localStorage.fullScreenPlusJSon).backgroundColor, "backgroundColorBox": JSON.parse(localStorage.fullScreenPlusJSon).backgroundColorBox, "fontSize": this.querySelector('input[type="number"]').value});
         });
         document.querySelector('#bbFullScreenPlus').appendChild(btn);
 		document.querySelector('#bbFullScreenPlus').insertBefore(btn, document.querySelector('#bbFullScreenPlus').childNodes[0]);
@@ -938,7 +933,7 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
 			document.querySelector('#bb-fullscreen-plus-iframe').style.opacity = `.${this.querySelector('input[type="range"]').value}!important`;
 			document.querySelector('#bbFullScreenPlus .description b').innerText = this.querySelector('input[type="range"]').value;
 			
-			localStorage.fullScreenPlusJSon = JSON.stringify({"opacity": this.querySelector('input[type="range"]').value, "backgroundColor": JSON.parse(localStorage.fullScreenPlusJSon).backgroundColor, "fontSize": JSON.parse(localStorage.fullScreenPlusJSon).fontSize});
+			localStorage.fullScreenPlusJSon = JSON.stringify({"opacity": this.querySelector('input[type="range"]').value, "backgroundColor": JSON.parse(localStorage.fullScreenPlusJSon).backgroundColor, "backgroundColorBox": JSON.parse(localStorage.fullScreenPlusJSon).backgroundColorBox, "fontSize": JSON.parse(localStorage.fullScreenPlusJSon).fontSize});
         });
         document.querySelector('#bbFullScreenPlus').appendChild(btn);
 		document.querySelector('#bbFullScreenPlus').insertBefore(btn, document.querySelector('#bbFullScreenPlus').childNodes[0]);
@@ -1039,6 +1034,33 @@ function betterFullScreenPlus(){
 			});
 	}
 }
+
+/*--------------------------------------------------------------------------------------------
+                                    BetterBrime Update Data
+---------------------------------------------------------------------------------------------*/
+    setInterval(() => {
+
+        fetch('https://api.betterbri.me/v2/brime/global/emotes')
+        .then(response => response.json())
+        .then(data => emotesList = data)
+        .then(logging('update.emotes', 'Loaded emote set: Global Emotes'));
+        fetch('https://api.betterbri.me/v2/brime/badges')
+        .then(response => response.json())
+        .then(data => badgeList = data)
+        .then(logging('update.badges', 'Loaded badges and assigned them to users.'));
+        fetch(`https://api.betterbri.me/v2/user/channel?nickname=${splitcurrentUrl[3].toLowerCase()}`)
+        .then(response => response.json())
+        .then(function(data) {
+            if(data.emotes === 'null' || data.emotes === null || data.emotes === ''){
+                channelList = data.emotes
+            }else{
+                channelList = data.emotes.replace(/&quot;/g,'"')
+            }
+        })
+        .then(logging('update.emotes', 'Loaded emote set: Channel: '+splitcurrentUrl[3]));
+
+    }, 10 * 60 * 1000);
+
 }
 
 function logging(w, m) {
