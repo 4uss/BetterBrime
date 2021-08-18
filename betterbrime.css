@@ -684,3 +684,12 @@ a.ui-button:active,
     padding: 25px;
     display: none;
 }
+.BetterBrime-Design .emoji-picker {
+    border: 0!important;
+    background-color: var(--bg-darked)!important;
+}
+.BetterBrime-Design input.emoji-picker__search {
+    background: var(--bg-second-dark)!important;
+    border: 0!important;
+    color: #7d8285!important;
+}

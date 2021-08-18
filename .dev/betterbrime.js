@@ -52,7 +52,7 @@ setInterval(() => {
     }
 }, 1000)
 
-function betterBrime() {
+async function betterBrime() {
 
     let chatExist = false;
     let emojiExist = false;
@@ -166,21 +166,42 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
 /*--------------------------------------------------------------------------------------------
                                     BetterBrime Intervals
 ---------------------------------------------------------------------------------------------*/
-    //Chat Observe
-    setInterval(() => {
-        const target = document.querySelector('#chat-thread')
+setInterval(() => {
+    const target = document.querySelector('#chat-thread')
 
-        if (target) {
-            if (!chatExist || !target.hasAttribute('data-maked-observer')) {
-                makeObserver(target)
-                chatExist = true
-                target.setAttribute('data-maked-observer', '1')
+    if (target) {
+        if (!chatExist || !target.hasAttribute('data-maked-observer')) {
+            makeObserver(target)
+            observeEmoji()
+            chatExist = true;
+
+            let btn = document.createElement("div");
+            btn.setAttribute("id", "bb-pin-container");
+            document.querySelector('.chat__column').appendChild(btn);
+            document.querySelector('.chat__column').insertBefore(btn, document.querySelector('.chat__column').childNodes[0]);
+            
+            if(!document.querySelector('#bb-settings2')){
+
+                let settingsBB2 = document.createElement("button");
+                settingsBB2.setAttribute("id", "bb-settings2");
+                settingsBB2.className = 'btn btn-outline-primary';
+                settingsBB2.style.padding = '10px';
+                settingsBB2.innerHTML = `<img src="https://cdn.betterbri.me/icons/16-purple.png" class="feather-more-horizontal">`;
+                settingsBB2.type = 'button';
+                settingsBB2.onclick = function() {
+                    document.querySelector('#bb-settings-container').style.display = 'block';
+                    document.querySelector('#app').style.filter = 'blur(8px)';
+                };
+                document.querySelector('.input-group-append').appendChild(settingsBB2);
             }
-        } else {
-            //logging('chat', "Could not find chat element.")
-            chatExist = false
+            
+            target.setAttribute('data-maked-observer', '1')
         }
-    }, 1000)
+    } else {
+        //logging('chat', "Could not find chat element.")
+        chatExist = false
+    }
+}, 1000)
     //Player
     setInterval(() => {
         const target = document.querySelector('.plyr__controls')
@@ -245,7 +266,7 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
     setInterval(() => {
         const target = document.querySelector('.emoji-picker__wrapper');
         if (target) {
-            if (!emojiExist) {
+            if (!document.getElementById('4ussEmotes-list')) {
 
                 if(channelList != 'false'){
 
@@ -277,35 +298,6 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
                 emojiExist = true
                 logging('chat.emotepicker', 'Generated emoji picker.')
 
-                
-                let btn = document.createElement("div");
-                btn.setAttribute("id", "bb-pin-container");
-                document.querySelector('.chat__column').appendChild(btn);
-                document.querySelector('.chat__column').insertBefore(btn, document.querySelector('.chat__column').childNodes[0]);
-
-                if(localStorage.BBcDesign === 'true'){
-                    document.querySelector('.emoji-picker').style.backgroundColor = 'var(--bg-darked)';
-                    document.querySelector('.emoji-picker').style.border = '0';
-                    document.querySelector('.emoji-picker__search').style.backgroundColor = 'var(--bg-second-dark)';
-                    document.querySelector('.emoji-picker__search').style.border = '0';
-                    document.querySelector('.emoji-picker__search').style.color = '#7d8285';
-                }
-
-                if(!document.querySelector('#bb-settings2')){
-
-                    let settingsBB2 = document.createElement("button");
-                    settingsBB2.setAttribute("id", "bb-settings2");
-                    settingsBB2.className = 'btn btn-outline-primary';
-                    settingsBB2.style.padding = '10px';
-                    settingsBB2.innerHTML = `<img src="https://cdn.betterbri.me/icons/16-purple.png" class="feather-more-horizontal">`;
-                    settingsBB2.type = 'button';
-                    settingsBB2.onclick = function() {
-                        document.querySelector('#bb-settings-container').style.display = 'block';
-                        document.querySelector('#app').style.filter = 'blur(8px)';
-                    };
-                    document.querySelector('.input-group-append').appendChild(settingsBB2);
-                }
-
             }
         } else {
             //logging('core', "Can't find default emote picker.")
@@ -320,164 +312,6 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
         const config = {
             childList: true
         }
-
-		if(splitcurrentUrl[3] === 'videos'){
-			return;
-		}else{
-        //Backups emotes picker
-        document.querySelector('.emoji-picker-trigger').addEventListener("click", function(e) {
-            if(!document.getElementById('4ussEmotes-list')){
-                var element = document.createElement("h2");
-                element.className = 'emoji-picker__category-name';
-                element.appendChild(document.createTextNode('BetterBrime Global'));
-                document.querySelector('.emoji-picker__emojis').appendChild(element);
-                //
-                var element = document.createElement("div");
-                element.className = 'emoji-picker__container';
-                element.id = '4ussEmotes-list';
-                document.querySelector('.emoji-picker__emojis').appendChild(element);
-
-                emotesList.map((item, i) => addToEmotes(item, '4ussEmotes-list', 'global'));
-
-                emojiExist = true
-                logging('recover', 'Generated emoji picker.')
-            }
-            if(channelList != 'false'){
-                if(!document.getElementById('betterEmotes-list')){
-                    var element = document.createElement("h2");
-                    element.className = 'emoji-picker__category-name';
-                    element.appendChild(document.createTextNode('Channel Emotes'));
-                    document.querySelector('.emoji-picker__emojis').appendChild(element);
-                    //
-                    var element = document.createElement("div");
-                    element.className = 'emoji-picker__container';
-                    element.id = 'betterEmotes-list';
-                    document.querySelector('.emoji-picker__emojis').appendChild(element);
-    
-                    JSON.parse(channelList).map((item, i) => addToEmotes(item, 'betterEmotes-list', 'channel'));
-                }
-            }
-        });
-	}
-        let observer2 = null
-        const callback2 = function(mutationsList, observer) {
-            for (let mutation of mutationsList) {
-                if (mutation.type === 'childList') {
-                    mutation.addedNodes.forEach(node => {
-                        Array.from(node.querySelectorAll('span[style="font-size: 13px;"] a')).forEach(img => {
-                            img.innerHTML = img.innerHTML.replace(/(https?:\/\/[^\s]+)/g, function(url) {
-                                `<div class="emoteInfo">
-                                    ${url}
-                                    <span class="tooltiptext p-1" style="text-align:center;">
-                                        <img src="${url}"/><br/>
-                                        <br/><small style="color:#03dac6;">Image Preview</small>
-                                    </span>
-                                </div> `;
-                            })
-                        })
-                        Array.from(node.querySelectorAll("span[style='font-size: 13px;']")).forEach(img => {
-                            for (var i = 0; i < emotesList.length; i++) {
-                                img.innerHTML = img.innerHTML.replace(new RegExp(emotesList[i].code + '( |$)', 'g'), ` 
-                                <div class="emoteInfo">
-                                    <img alt="${emotesList[i].code}" src="https://i.imgur.com/${emotesList[i].id}.png">
-                                    <span class="tooltiptext p-1" style="text-align:center;">
-                                        <img src="https://i.imgur.com/${emotesList[i].id}.png"/><br/>
-                                        <h4>${emotesList[i].code}</h4>
-                                        <img src="https://cdn.betterbri.me/icons/16.png">
-                                        <small style="color:#03dac6;">Global</small>
-                                    </span>
-                                </div> `);
-                            }
-                            if(channelList != 'false'){
-                                dataEmote = JSON.parse(channelList)
-                                for (var i = 0; i < dataEmote.length; i++) {
-                                    img.innerHTML = img.innerHTML.replace(new RegExp(dataEmote[i].name + '( |$)', 'g'), ` 
-                                    <div class="emoteInfo">
-                                        <img alt="${dataEmote[i].name}" src="https://i.imgur.com/${dataEmote[i].imgur_id}.png">
-                                        <span class="tooltiptext p-1" style="text-align:center;">
-                                            <img src="https://i.imgur.com/${dataEmote[i].imgur_id}.png"/><br/>
-                                            <h4>${dataEmote[i].name}</h4>
-                                            <img src="https://cdn.betterbri.me/icons/16.png">
-                                            <small style="color:#03dac6;">Channel</small>
-                                        </span>
-                                    </div> `);
-                                }
-                            }
-                            if (img.innerHTML.includes(userData) && localStorage.BBrBackground === 'true') {
-                                for (var i = 0; i < 1; i++) {
-                                    createHightlight(img.innerText)
-                                }
-                            }
-                        })
-                        Array.from(node.querySelectorAll("a[style='font-size: 13px; color: inherit;']")).forEach(img => {
-                            for (var i = 0; i < badgeList.length; i++) {
-                                if(badgeList[i].badges === ''){
-                                    img.innerHTML = img.innerHTML.replace(new RegExp(badgeList[i].nickname + '( |$)', 'g'), `<strong style="color:#${badgeList[i].color}">${badgeList[i].nickname}: </strong>`);
-                                }else{
-                                    img.innerHTML = img.innerHTML.replace(new RegExp(badgeList[i].nickname + '( |$)', 'g'), ` <img alt="${badgeList[i].badges}" class="chatBadge" style="height: 1.20em; vertical-align: middle;" src="https://cdn.betterbri.me/badges/${badgeList[i].badges}.png"> <strong style="color:#${badgeList[i].color}">${badgeList[i].nickname}: </strong>`);
-                                }
-                            }
-                        })
-                        Array.from(node.querySelectorAll("span[style='margin-left: -3px;']")).forEach(img => {
-                                if(localStorage.BBTimestamps === 'true' && splitcurrentUrl[4] !== 'chat'){
-                                    if(localStorage.BBTimestampstype === 'vod'){
-                                        if(document.querySelector('div[aria-label="Current time"]').innerText === '00:00') return;
-
-                                        img.innerHTML = img.innerHTML.replace(new RegExp(img.innerHTML +'( |$)', 'g'), `<strong class="timestamp">${document.querySelector('div[aria-label="Current time"]').innerText}</strong> ${img.innerHTML}`);
-                                    }else if(localStorage.BBTimestampstype === 'local'){
-                                        if(gimmeTime() === loadofexTime) return;
-                                
-                                        img.innerHTML = img.innerHTML.replace(new RegExp(img.innerHTML +'( |$)', 'g'), `<strong class="timestamp">${gimmeTime()}</strong> ${img.innerHTML}`);
-                                    }
-                                }
-                        })
-                    })
-                    if (localStorage.BBdeletedM === 'true') {
-                    mutation.removedNodes.forEach(node => {
-                        Array.from(node.querySelectorAll(`li span b`)).forEach(img => {
-                            let btn = document.createElement("li");
-                            if(localStorage.BBLightMode === 'true'){
-                                btn.innerHTML = `<span style="color: #553bde"> ${img.innerHTML} <br/><small style="color: var(--font-color);font-weight: bold;">This is deleted message.</small></span>`;
-                                btn.style.opacity = '0.6';
-                                btn.style.backgroundColor = 'rgb(181 181 181)';
-                                btn.style.marginBottom = '0';
-                                btn.style.borderLeft = '5px solid red';
-                            }else{
-                                btn.innerHTML = `<span style="color: #553bde"> ${img.innerHTML} <br/><small style="color: #929292;font-weight: bold;">This is deleted message.</small></span>`;
-                                btn.style.opacity = '0.6';
-                                btn.style.backgroundColor = 'rgb(0 0 0)';
-                                btn.style.marginBottom = '0';
-                                btn.style.borderLeft = '5px solid white';
-                            }
-                            btn.className = "chatLine";
-                            btn.style.borderRadius = "0px";
-                            document.getElementById('chat-thread').appendChild(btn);
-                        })
-                        Array.from(node.querySelectorAll(`li span[style="font-size: 13px;"]`)).forEach(img => {
-                            let btn = document.createElement("li");
-                            if(localStorage.BBLightMode === 'true'){
-                                btn.style.backgroundColor = 'rgb(181 181 181)';
-                                btn.style.borderLeft = '5px solid red';
-                            }else{
-                                btn.style.backgroundColor = 'rgb(0 0 0)';
-                                btn.style.borderLeft = '5px solid white';
-                            }
-                            btn.innerHTML = `<span style="font-size: 13px;"> <b style="cursor:pointer">Click to show</b></span>`;
-                            btn.className = "chatLine";
-                            btn.style.opacity = '0.6';
-                            btn.style.borderRadius = "0px";
-                            btn.onclick = function() {
-                                this.innerHTML = `<span style="font-size: 13px;">${img.innerHTML}</span>`;
-                            };
-                            document.getElementById('chat-thread').appendChild(btn);
-                        })
-                    })
-                }
-                }
-            }
-        };
-        observer2 = new MutationObserver(callback2)
-
         const callback = function(mutationsList, observer) {
             for (let mutation of mutationsList) {
                 if (mutation.type === 'childList') {
@@ -598,6 +432,110 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
         const observer = new MutationObserver(callback)
         observer.observe(target, config)
     }
+
+    async function observeEmoji() {
+        const config = {
+            childList: true
+        }
+        const callback2 = function(mutationsList, observer) {
+            for (let mutation of mutationsList) {
+                if (mutation.type === 'childList') {
+                    mutation.addedNodes.forEach(node => {
+                        Array.from(node.querySelectorAll('div.emoji-picker__wrapper div.emoji-picker.light div.emoji-picker__content div.emoji-picker__emoji-area div.emoji-picker__emojis')).forEach(img => {
+                        
+                            const timeEmojiPicker = Date.now();
+                            if(img.querySelector('[bb-element]')) return;
+                            var xhttp = new XMLHttpRequest();
+                            xhttp.onreadystatechange = function() {
+                                if (this.readyState == 4 && this.status == 200) {
+                                    channelList = JSON.parse(this.responseText).emotes;
+
+                                    if(JSON.parse(this.responseText).emotes !== 'false'){
+
+                                        var elementXD = document.createElement("h2");
+                                        elementXD.className = 'emoji-picker__category-name';
+                                        elementXD.appendChild(document.createTextNode('Channel Emotes'));
+                                        img.appendChild(elementXD);
+                                        //
+                                        var element = document.createElement("div");
+                                        element.className = 'emoji-picker__container';
+                                        element.id = 'betterEmotes-list-'+timeEmojiPicker;
+                                        element.setAttribute('bb-element', ' ')
+                                        img.appendChild(element);
+                        
+                                        JSON.parse(JSON.parse(this.responseText).emotes).map((item, i) => {
+                                            let btn = document.createElement("button");
+                                            btn.innerHTML = `<img class="emoji-picker__custom-emoji" src="https://i.imgur.com/${item.imgur_id}.png">`;
+                                            btn.className = "emoji-picker__emoji";
+                                            btn.title = item.name;
+                                            btn.style.opacity = "1";
+                                            btn.onclick = function() {
+                                                document.querySelector('#chat-form #message').value = `${document.querySelector('#chat-form #message').value}${item.name} `;
+                                                document.querySelector('#chat-form #message').focus();
+                                            };
+                                            btn.onmouseover = function() {
+                                                previewEmote(item.imgur_id, item.name)
+                                            };
+                                            btn.onmouseout = function() {
+                                                previewClean()
+                                            };
+                                            document.getElementById('betterEmotes-list-'+timeEmojiPicker).appendChild(btn);
+                                        });
+                                    }
+                                    logging('chat.emotes', 'Loaded emote set: Channel: '+window.location.href.split('/')[3])
+                                }else{
+                                    channelList = "false" 
+                                }
+                            };
+                            xhttp.open("GET", "https://api-staging.betterbri.me/user/channel/"+window.location.href.split('/')[3], true);
+                            xhttp.send();
+                            fetch('https://api-staging.betterbri.me/global/emotes')
+                                .then(response => response.json())
+                                .then(data => emotesList = data)
+                                .then(logging('chat.emotes', 'Loaded emote set: Global Emotes'));
+                            fetch('https://api-staging.betterbri.me/global/badges')
+                                .then(response => response.json())
+                                .then(data => badgeList = data)
+                                .then(logging('chat.badges', 'Loaded badges and assigned them to users.'));
+            
+                            var elementZX = document.createElement("h2");
+                            elementZX.className = 'emoji-picker__category-name';
+                            elementZX.appendChild(document.createTextNode('BetterBrime Global'));
+                            img.appendChild(elementZX);
+                            //
+                            var elementYU = document.createElement("div");
+                            elementYU.className = 'emoji-picker__container';
+                            elementYU.setAttribute('bb-element', ' ')
+                            elementYU.id = '4ussEmotes-list-'+timeEmojiPicker;
+                            img.appendChild(elementYU);
+            
+                            emotesList.map((item, i) => {
+                                let btn = document.createElement("button");
+                                btn.innerHTML = `<img class="emoji-picker__custom-emoji" src="https://i.imgur.com/${item.id}.png">`;
+                                btn.className = "emoji-picker__emoji";
+                                btn.title = item.code;
+                                btn.style.opacity = "1";
+                                btn.onclick = function() {
+                                    document.querySelector('#chat-form #message').value = `${document.querySelector('#chat-form #message').value}${item.code} `;
+                                    document.querySelector('#chat-form #message').focus();
+                                };
+                                btn.onmouseover = function() {
+                                    previewEmote(item.id, item.code)
+                                };
+                                btn.onmouseout = function() {
+                                    previewClean()
+                                };
+                                document.getElementById('4ussEmotes-list-'+timeEmojiPicker).appendChild(btn);
+                            });
+                            logging('chat.emotepicker', 'Generated emoji picker.')
+                        })
+                    })
+                }
+            }
+        }
+        const observer2 = new MutationObserver(callback2)
+        observer2.observe(document.body, config)
+    }
 /*--------------------------------------------------------------------------------------------
                                     BetterBrime Emotes System
 ---------------------------------------------------------------------------------------------*/
@@ -713,6 +651,9 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
 	<div id="bbChangelog" style="">
     <h1>Changelog</h1>
 		<div class="bttv-changelog-releases">
+            <h2>Version 1.22 (August 18, 2021)</h2>
+  			<p>- Now you don't need refresh page for emoji picker and emotes<br/>- Full API UPDATE to version 3 <a href="https://dev.betterbri.me/">https://dev.betterbri.me/</a></p>
+
             <h2>Version 1.21 (July 26, 2021)</h2>
   			<p>- Fullscreen Plus Separate backgrounds <ul><li>Change Background of chat</li><li>Change Background of fullscreen box</li></ul><br/>- Automatic update emotes every 10 minutes<br/>- Updated logo inside settings</br>- Fixed issue with duplicated settings buttons</br>- Tutorial how to link account <a href="https://youtu.be/DjMZzxcHOIc" target="_blank">YouTube</a></p>
 
@@ -999,10 +940,10 @@ function betterFullScreenPlus(){
 			var settingsBG = document.createElement("div");
 			settingsBG.innerHTML = `
 			<div class="header">
-				<h3>Fullscreen Plus #${splitcurrentUrl[3]}</h3>
+				<h3>Fullscreen Plus #${window.location.href.split('/')[3]}</h3>
 			</div>
 			<div class="body">
-				<iframe src="https://beta.brimelive.com/${splitcurrentUrl[3]}/chat" frameborder="0" scrolling="no" style="height: 100%;"></iframe>
+				<iframe src="https://beta.brimelive.com/${window.location.href.split('/')[3]}/chat" frameborder="0" scrolling="no" style="height: 100%;"></iframe>
 			</div>`;
 			settingsBG.setAttribute("id", "bb-fullscreen-plus-iframe");
 			settingsBG.className = 'bb-fullscreen-box text-center';
@@ -1061,26 +1002,25 @@ function betterFullScreenPlus(){
 ---------------------------------------------------------------------------------------------*/
     setInterval(() => {
 
-        fetch('https://api-staging.betterbri.me/global/emotes')
+    fetch('https://api-staging.betterbri.me/global/emotes')
         .then(response => response.json())
         .then(data => emotesList = data)
-        .then(logging('update.emotes', 'Loaded emote set: Global Emotes'));
-        fetch('https://api-staging.betterbri.me/global/badges')
+        .then(logging('chat.emotes', 'Loaded emote set: Global Emotes'));
+    fetch('https://api-staging.betterbri.me/global/badges')
         .then(response => response.json())
         .then(data => badgeList = data)
-        .then(logging('update.badges', 'Loaded badges and assigned them to users.'));
-        fetch(`https://api-staging.betterbri.me/user/channel/${splitcurrentUrl[3].toLowerCase()}`)
-        .then(response => response.json())
-        .then(function(data) {
-            if(data.message) return channelList = "false";
-
-            if(data.emotes === 'null' || data.emotes === null || data.emotes === ''){
-                channelList = data.emotes
-            }else{
-                channelList = data.emotes.replace(/&quot;/g,'"')
-            }
-        })
-        .then(logging('update.emotes', 'Loaded emote set: Channel: '+splitcurrentUrl[3]));
+        .then(logging('chat.badges', 'Loaded badges and assigned them to users.'));
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            channelList = JSON.parse(this.responseText).emotes;
+            logging('update.emotes', 'Loaded emote set: Channel: '+window.location.href.split('/')[3])
+        }else{
+            channelList = "false" 
+        }
+    };
+    xhttp.open("GET", "https://api-staging.betterbri.me/user/channel/"+window.location.href.split('/')[3], true);
+    xhttp.send();
 
     }, 10 * 60 * 1000);
 
