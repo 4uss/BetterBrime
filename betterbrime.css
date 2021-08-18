@@ -678,3 +678,9 @@ a.ui-button:active,
 	left: 0;
 	top: 0;
 }
+#bb-settings-container #bbSupporters {
+    height: 425px;
+    overflow-y: scroll;
+    padding: 25px;
+    display: none;
+}

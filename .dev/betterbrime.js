@@ -107,24 +107,25 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
 /*--------------------------------------------------------------------------------------------
                                     BetterBrime Data
 ---------------------------------------------------------------------------------------------*/
-    fetch('https://api.betterbri.me/v2/brime/global/emotes')
+    fetch('https://api-staging.betterbri.me/global/emotes')
         .then(response => response.json())
         .then(data => emotesList = data)
         .then(logging('chat.emotes', 'Loaded emote set: Global Emotes'));
-    fetch('https://api.betterbri.me/v2/brime/badges')
+    fetch('https://api-staging.betterbri.me/global/badges')
         .then(response => response.json())
         .then(data => badgeList = data)
         .then(logging('chat.badges', 'Loaded badges and assigned them to users.'));
-    fetch(`https://api.betterbri.me/v2/user/channel?nickname=${splitcurrentUrl[3].toLowerCase()}`)
-        .then(response => response.json())
-        .then(function(data) {
-            if(data.emotes === 'null' || data.emotes === null || data.emotes === ''){
-                channelList = data.emotes
-            }else{
-                channelList = data.emotes.replace(/&quot;/g,'"')
-            }
-        })
-        .then(logging('chat.emotes', 'Loaded emote set: Channel: '+splitcurrentUrl[3]));
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            channelList = JSON.parse(this.responseText).emotes;
+            logging('chat.emotes', 'Loaded emote set: Channel: '+splitcurrentUrl[3])
+        }else{
+            channelList = "false" 
+        }
+    };
+    xhttp.open("GET", "https://api-staging.betterbri.me/user/channel/"+splitcurrentUrl[3], true);
+    xhttp.send();
 /*--------------------------------------------------------------------------------------------
                                     BetterBrime Design
 ---------------------------------------------------------------------------------------------*/
@@ -410,10 +411,10 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
                         })
                         Array.from(node.querySelectorAll("a[style='font-size: 13px; color: inherit;']")).forEach(img => {
                             for (var i = 0; i < badgeList.length; i++) {
-                                if(badgeList[i].badge === ''){
+                                if(badgeList[i].badges === ''){
                                     img.innerHTML = img.innerHTML.replace(new RegExp(badgeList[i].nickname + '( |$)', 'g'), `<strong style="color:#${badgeList[i].color}">${badgeList[i].nickname}: </strong>`);
                                 }else{
-                                    img.innerHTML = img.innerHTML.replace(new RegExp(badgeList[i].nickname + '( |$)', 'g'), ` <img alt="${badgeList[i].badge}" class="chatBadge" style="height: 1.20em; vertical-align: middle;" src="https://cdn.betterbri.me/badges/${badgeList[i].badge}.png"> <strong style="color:#${badgeList[i].color}">${badgeList[i].nickname}: </strong>`);
+                                    img.innerHTML = img.innerHTML.replace(new RegExp(badgeList[i].nickname + '( |$)', 'g'), ` <img alt="${badgeList[i].badges}" class="chatBadge" style="height: 1.20em; vertical-align: middle;" src="https://cdn.betterbri.me/badges/${badgeList[i].badges}.png"> <strong style="color:#${badgeList[i].color}">${badgeList[i].nickname}: </strong>`);
                                 }
                             }
                         })
@@ -529,10 +530,10 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
                         })
                         Array.from(node.querySelectorAll("a[style='font-size: 13px; color: inherit;']")).forEach(img => {
                             for (var i = 0; i < badgeList.length; i++) {
-                                if(badgeList[i].badge === ''){
+                                if(badgeList[i].badges === ''){
                                     img.innerHTML = img.innerHTML.replace(new RegExp(badgeList[i].nickname + '( |$)', 'g'), `<strong style="color:#${badgeList[i].color}">${badgeList[i].nickname}: </strong>`);
                                 }else{
-                                    img.innerHTML = img.innerHTML.replace(new RegExp(badgeList[i].nickname + '( |$)', 'g'), ` <img alt="${badgeList[i].badge}" class="chatBadge" style="height: 1.20em; vertical-align: middle;" src="https://cdn.betterbri.me/badges/${badgeList[i].badge}.png"> <strong style="color:#${badgeList[i].color}">${badgeList[i].nickname}: </strong>`);
+                                    img.innerHTML = img.innerHTML.replace(new RegExp(badgeList[i].nickname + '( |$)', 'g'), ` <img alt="${badgeList[i].badges}" class="chatBadge" style="height: 1.20em; vertical-align: middle;" src="https://cdn.betterbri.me/badges/${badgeList[i].badges}.png"> <strong style="color:#${badgeList[i].color}">${badgeList[i].nickname}: </strong>`);
                                 }
                             }
                         })
@@ -692,13 +693,16 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
     <span id="logo"><img height="32px" src="https://cdn.betterbri.me/icons/128.png"></span>
     <ul class="nav">
       <li id="im-bb-settings-nav">
-	  	<a onclick="document.getElementById('bb-settings-here').style.display = 'block';document.getElementById('bbFullScreenPlus').style.display = 'none';document.getElementById('bbChangelog').style.display = 'none';">Settings</a>
+	  	<a onclick="document.getElementById('bb-settings-here').style.display = 'block';document.getElementById('bbFullScreenPlus').style.display = 'none';document.getElementById('bbChangelog').style.display = 'none';document.getElementById('bbSupporters').style.display = 'none';">Settings</a>
 	  </li>
       <li id="im-bb-changelog-nav">
-	  	<a onclick="document.getElementById('bb-settings-here').style.display = 'none';document.getElementById('bbChangelog').style.display = 'block';document.getElementById('bbFullScreenPlus').style.display = 'none';">Changelog</a>
+	  	<a onclick="document.getElementById('bb-settings-here').style.display = 'none';document.getElementById('bbChangelog').style.display = 'block';document.getElementById('bbFullScreenPlus').style.display = 'none';document.getElementById('bbSupporters').style.display = 'none';">Changelog</a>
 	  </li>
 	  <li id="im-bb-FullScreenPlus-nav">
-	  	<a onclick="document.getElementById('bb-settings-here').style.display = 'none';document.getElementById('bbChangelog').style.display = 'none';document.getElementById('bbFullScreenPlus').style.display = 'block';">Fullscreen Plus</a>
+	  	<a onclick="document.getElementById('bb-settings-here').style.display = 'none';document.getElementById('bbChangelog').style.display = 'none';document.getElementById('bbFullScreenPlus').style.display = 'block';document.getElementById('bbSupporters').style.display = 'none';">Fullscreen Plus</a>
+	  </li>
+	  <li id="im-bb-supporters-nav">
+	  	<a onclick="document.getElementById('bb-settings-here').style.display = 'none';document.getElementById('bbChangelog').style.display = 'none';document.getElementById('bbFullScreenPlus').style.display = 'none';document.getElementById('bbSupporters').style.display = 'block';">Supporters</a>
 	  </li>
     </ul>
     <span id="close"></span>
@@ -731,6 +735,13 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
 			<div class="reset-button">
 				
 			</div>
+  	</div>
+	<div id="bbSupporters" style="">
+    <h1>Supporters</h1>
+		<div class="bttv-changelog-releases" id="bb-supporters-here">
+              <ul>
+              </ul>
+		</div>
   	</div>
 	<div id="footer">
     <span>BetterBrime © 2021</span>
@@ -774,6 +785,11 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
 		document.querySelector(`#bb-fullscreen-plus-iframe`).style.height = '518px';
 	};
 	document.querySelector('.reset-button').appendChild(createRestButton);
+    
+    fetch('https://api-staging.betterbri.me/global/supporters')
+    .then(response => response.json())
+    .then(data => data.map((item, i) => BBSupporters(item.nickname)))
+    .then(logging('get.supporters', 'Loaded supporters set'));
 	
 
     //Refresh Button
@@ -938,6 +954,11 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
         document.querySelector('#bbFullScreenPlus').appendChild(btn);
 		document.querySelector('#bbFullScreenPlus').insertBefore(btn, document.querySelector('#bbFullScreenPlus').childNodes[0]);
 	}
+    function BBSupporters(n){
+        let beCoool = document.createElement("li");
+		beCoool.innerHTML = `<a href="https://betterbri.me/profile/${n}" target="_blank">${n}</a>`;
+        document.querySelector('#bb-supporters-here ul').appendChild(beCoool);
+    }
 /*--------------------------------------------------------------------------------------------
                                     BetterBrime Extensions
 ---------------------------------------------------------------------------------------------*/
@@ -1040,17 +1061,19 @@ function betterFullScreenPlus(){
 ---------------------------------------------------------------------------------------------*/
     setInterval(() => {
 
-        fetch('https://api.betterbri.me/v2/brime/global/emotes')
+        fetch('https://api-staging.betterbri.me/global/emotes')
         .then(response => response.json())
         .then(data => emotesList = data)
         .then(logging('update.emotes', 'Loaded emote set: Global Emotes'));
-        fetch('https://api.betterbri.me/v2/brime/badges')
+        fetch('https://api-staging.betterbri.me/global/badges')
         .then(response => response.json())
         .then(data => badgeList = data)
         .then(logging('update.badges', 'Loaded badges and assigned them to users.'));
-        fetch(`https://api.betterbri.me/v2/user/channel?nickname=${splitcurrentUrl[3].toLowerCase()}`)
+        fetch(`https://api-staging.betterbri.me/user/channel/${splitcurrentUrl[3].toLowerCase()}`)
         .then(response => response.json())
         .then(function(data) {
+            if(data.message) return channelList = "false";
+
             if(data.emotes === 'null' || data.emotes === null || data.emotes === ''){
                 channelList = data.emotes
             }else{
