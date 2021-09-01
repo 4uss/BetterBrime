@@ -17,7 +17,8 @@ if (!localStorage.fullScreenPlusJSon) {localStorage.fullScreenPlusJSon = JSON.st
 if (!localStorage.getItem(`BBFullScreen-size`)) {let tmpobj = {w: 357,h: 518};localStorage.setItem(`BBFullScreen-size`, JSON.stringify(tmpobj));}
 if (!localStorage.getItem(`BBFullScreen-location`)) {let tmpobj = {x: 0,y: 0};localStorage.setItem(`BBFullScreen-location`, JSON.stringify(tmpobj));}
 
-const site = document.querySelector('#cb-container')
+const site = document.querySelector('.footer')
+const chatContainerEmbed = document.querySelector('.grecaptcha-badge');
 var statusBB = false
 var userData;
 var currentUrl = window.location.href;
@@ -44,7 +45,32 @@ setInterval(() => {
                 userData = document.querySelector('p[class="user-name font-weight-bolder mb-0"]').innerText;
             }
             betterBrime();
-            site.setAttribute('betterbrime-loaded', '1')
+
+            if(site) site.setAttribute('betterbrime-loaded', '1')
+            else if(document.querySelector('.grecaptcha-badge')) site.setAttribute('betterbrime-loaded', '1')
+        }
+    }else if(chatContainerEmbed){
+        if (!statusBB || !chatContainerEmbed.hasAttribute('betterbrime-loaded')) {
+
+            console.log("%c0", `
+                    line-height: 105px;
+                    background-image: url("https://cdn.betterbri.me/betterbrime_full_white.png");
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-color: #141414;
+                    border-radius: 15px;
+                    margin-left: calc((50% - 150px) - 1ch);
+                    padding-left: 150px;
+                    color: transparent;
+                    padding-right: 150px;
+            `);
+            statusBB = true
+            if (document.querySelector('p[class="user-name font-weight-bolder mb-0"]')) {
+                userData = document.querySelector('p[class="user-name font-weight-bolder mb-0"]').innerText;
+            }
+            betterBrime();
+            chatContainerEmbed.setAttribute('betterbrime-loaded', '1')
         }
     } else {
         logging('core', "Can't load extension.")
@@ -55,7 +81,6 @@ setInterval(() => {
 async function betterBrime() {
 
     let chatExist = false;
-    let emojiExist = false;
     let playerexist = false;
     let emotesList;
     let badgeList;
@@ -144,7 +169,7 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
         css.type = 'text/css';
 
         css.appendChild(document.createTextNode(`
-        li.chatLine:nth-child(odd) {
+        .messages div.wrapper:nth-child(odd) {
             background-color: #101013;
             border-radius: 7px;
         }
@@ -152,7 +177,7 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
             border-radius: 7px;
             background-color: #080809;
         }
-        .BetterBrime-Light li.chatLine:nth-child(odd) {
+        .BetterBrime-Light .messages div.wrapper:nth-child(odd) {
             background-color: #c7c7c7;
             border-radius: 7px;
         }
@@ -167,7 +192,7 @@ if ( window !== window.parent && localStorage.BBFullScreen === 'true')
                                     BetterBrime Intervals
 ---------------------------------------------------------------------------------------------*/
 setInterval(() => {
-    const target = document.querySelector('#chat-thread')
+    const target = document.querySelector('.messages')
 
     if (target) {
         if (!chatExist || !target.hasAttribute('data-maked-observer')) {
@@ -179,21 +204,6 @@ setInterval(() => {
             btn.setAttribute("id", "bb-pin-container");
             document.querySelector('.chat__column').appendChild(btn);
             document.querySelector('.chat__column').insertBefore(btn, document.querySelector('.chat__column').childNodes[0]);
-            
-            if(!document.querySelector('#bb-settings2')){
-
-                let settingsBB2 = document.createElement("button");
-                settingsBB2.setAttribute("id", "bb-settings2");
-                settingsBB2.className = 'btn btn-outline-primary';
-                settingsBB2.style.padding = '10px';
-                settingsBB2.innerHTML = `<img src="https://cdn.betterbri.me/icons/16-purple.png" class="feather-more-horizontal">`;
-                settingsBB2.type = 'button';
-                settingsBB2.onclick = function() {
-                    document.querySelector('#bb-settings-container').style.display = 'block';
-                    document.querySelector('#app').style.filter = 'blur(8px)';
-                };
-                document.querySelector('.input-group-append').appendChild(settingsBB2);
-            }
             
             target.setAttribute('data-maked-observer', '1')
         }
@@ -210,23 +220,6 @@ setInterval(() => {
             if (!playerexist || !target.hasAttribute('data-maked-observer')) {
                 playerexist = true
                 target.setAttribute('data-maked-observer', '1')
-                
-                    let refresh = document.createElement("button");
-                    refresh.classList = 'plyr__controls__item plyr__control';
-                    refresh.setAttribute('id', 'bb-refresh')
-                    refresh.type = 'button';
-                    refresh.innerHTML = `<i class="fas fa-redo"></i>`;
-                    refresh.addEventListener("click", function(e) {
-                            document.getElementById('stream-video').src = document.getElementById('stream-video').src;
-                            setTimeout(() => {
-                                console.clear()
-                                logging('core', 'Console cleared.')
-                            }, 1000);
-                    });
-                if(!document.querySelector('#bb-refresh') && splitcurrentUrl[3] != 'clips'){
-					document.querySelector('#player .plyr .plyr__controls').appendChild(refresh);
-					document.querySelector('#player .plyr .plyr__controls').insertBefore(refresh, document.querySelector('#player .plyr .plyr__controls').childNodes[6]);
-                }
 
 				if(localStorage.BBFullScreen === 'true'){
 					betterFullScreenPlus()
@@ -316,7 +309,7 @@ setInterval(() => {
             for (let mutation of mutationsList) {
                 if (mutation.type === 'childList') {
                     mutation.addedNodes.forEach(node => {
-                        Array.from(node.querySelectorAll('span[style="font-size: 13px;"] a')).forEach(img => {
+                        Array.from(node.querySelectorAll(".message span[class='m__content'] span a")).forEach(img => {
                             if(img.href.endsWith('.jpg') === true || img.href.endsWith('.png') === true || img.href.endsWith('.gif') === true || img.href.endsWith('.svg') === true || img.href.endsWith('.jpeg') === true){
                                 img.innerHTML = img.href.replace(new RegExp('^(https?:\\/\\/)?'+ '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+'((\\d{1,3}\\.){3}\\d{1,3}))'+'(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+'(\\?[;&a-z\\d%_.~+=-]*)?'+'(\\#[-a-z\\d_]*)?$','i'),
                                     `<div class="emoteInfo">
@@ -328,7 +321,7 @@ setInterval(() => {
                                     </div> `);
                             }
                         })
-                        Array.from(node.querySelectorAll("span[style='font-size: 13px;']")).forEach(img => {
+                        Array.from(node.querySelectorAll(".message span[class='m__content'] span")).forEach(img => {
                             for (var i = 0; i < emotesList.length; i++) {
                                 img.innerHTML = img.innerHTML.replace(new RegExp(emotesList[i].code + '( |$)', 'g'), ` 
                                 <div class="emoteInfo">
@@ -362,16 +355,18 @@ setInterval(() => {
                                 }
                             }
                         })
-                        Array.from(node.querySelectorAll("a[style='font-size: 13px; color: inherit;']")).forEach(img => {
+                        Array.from(node.querySelectorAll(".message span[class='m__username']")).forEach(img => {
                             for (var i = 0; i < badgeList.length; i++) {
                                 if(badgeList[i].badges === ''){
                                     img.innerHTML = img.innerHTML.replace(new RegExp(badgeList[i].nickname + '( |$)', 'g'), `<strong style="color:#${badgeList[i].color}">${badgeList[i].nickname}: </strong>`);
                                 }else{
-                                    img.innerHTML = img.innerHTML.replace(new RegExp(badgeList[i].nickname + '( |$)', 'g'), ` <img alt="${badgeList[i].badges}" class="chatBadge" style="height: 1.20em; vertical-align: middle;" src="https://cdn.betterbri.me/badges/${badgeList[i].badges}.png"> <strong style="color:#${badgeList[i].color}">${badgeList[i].nickname}: </strong>`);
+                                    img.innerHTML = img.innerHTML.replace(new RegExp(badgeList[i].nickname + '( |$)', 'g'), ` 
+                                    <img alt="${badgeList[i].badges}" title="${badgeList[i].badge_name}" class="chatBadge" bb-type="tooltip-here" style="height: 1.20em; vertical-align: middle;" src="https://cdn.betterbri.me/badges/${badgeList[i].badges}.png"> 
+                                    <strong style="color:#${badgeList[i].color}">${badgeList[i].nickname}: </strong>`);
                                 }
                             }
                         })
-                        Array.from(node.querySelectorAll("span[style='margin-left: -3px;']")).forEach(img => {
+                        /*Array.from(node.querySelectorAll("span[style='margin-left: -3px;']")).forEach(img => {
                             if(localStorage.BBTimestamps === 'true' && splitcurrentUrl[4] !== 'chat'){
                                 if(localStorage.BBTimestampstype === 'vod'){
                                     if(document.querySelector('div[aria-label="Current time"]').innerText === '00:00') return;
@@ -383,7 +378,7 @@ setInterval(() => {
                                     img.innerHTML = img.innerHTML.replace(new RegExp(img.innerHTML +'( |$)', 'g'), `<strong class="timestamp">${gimmeTime()}</strong> ${img.innerHTML}`);
                                 }
                             }
-                        })
+                        })*/
                     })
                     if (localStorage.BBdeletedM === 'true') {
                         mutation.removedNodes.forEach(node => {
@@ -470,8 +465,11 @@ setInterval(() => {
                                             btn.title = item.name;
                                             btn.style.opacity = "1";
                                             btn.onclick = function() {
-                                                document.querySelector('#chat-form #message').value = `${document.querySelector('#chat-form #message').value}${item.name} `;
-                                                document.querySelector('#chat-form #message').focus();
+                                                let el = document.querySelector(".chat__input");
+                                                el.value = document.querySelector(".chat__input").value.trim() + " ".concat(item.name);
+                                                el.dispatchEvent(new Event('input'));
+                                                document.querySelector('.emoji-picker__wrapper').style.display = "none";
+                                                document.querySelector(".chat__input").focus()
                                             };
                                             btn.onmouseover = function() {
                                                 previewEmote(item.imgur_id, item.name)
@@ -516,8 +514,11 @@ setInterval(() => {
                                 btn.title = item.code;
                                 btn.style.opacity = "1";
                                 btn.onclick = function() {
-                                    document.querySelector('#chat-form #message').value = `${document.querySelector('#chat-form #message').value}${item.code} `;
-                                    document.querySelector('#chat-form #message').focus();
+                                    let el = document.querySelector(".chat__input");
+                                    el.value = document.querySelector(".chat__input").value.trim() + " ".concat(item.code);
+                                    el.dispatchEvent(new Event('input'));
+                                    document.querySelector('.emoji-picker__wrapper').style.display = "none";
+                                    document.querySelector(".chat__input").focus()
                                 };
                                 btn.onmouseover = function() {
                                     previewEmote(item.id, item.code)
@@ -547,8 +548,11 @@ setInterval(() => {
 			btn.title = name.name;
 			btn.style.opacity = "1";
 			btn.onclick = function() {
-				document.querySelector('#chat-form #message').value = `${document.querySelector('#chat-form #message').value}${name.name} `;
-				document.querySelector('#chat-form #message').focus();
+                let el = document.querySelector(".chat__input");
+                el.value = document.querySelector(".chat__input").value.trim() + " ".concat(name.name);
+                el.dispatchEvent(new Event('input'));
+                document.querySelector('.emoji-picker__wrapper').style.display = "none";
+                document.querySelector(".chat__input").focus()
 			};
 			btn.onmouseover = function() {
 				previewEmote(name.imgur_id, name.name)
@@ -564,8 +568,11 @@ setInterval(() => {
 			btn.title = name.code;
 			btn.style.opacity = "1";
 			btn.onclick = function() {
-				document.querySelector('#chat-form #message').value = `${document.querySelector('#chat-form #message').value}${name.code} `;
-				document.querySelector('#chat-form #message').focus();
+                let el = document.querySelector(".chat__input");
+                el.value = document.querySelector(".chat__input").value.trim() + " ".concat(name.code);
+                el.dispatchEvent(new Event('input'));
+                document.querySelector('.emoji-picker__wrapper').style.display = "none";
+                document.querySelector(".chat__input").focus()
 			};
 			btn.onmouseover = function() {
 				previewEmote(name.id, name.code)
@@ -651,6 +658,15 @@ setInterval(() => {
 	<div id="bbChangelog" style="">
     <h1>Changelog</h1>
 		<div class="bttv-changelog-releases">
+            <h2>Version 1.23 (September 01, 2021)</h2>
+  			<p>- BetterBrime is now working with new version of Brime<br/>- As always fixed some bugs<br/>
+              <strong>Version 1.23.1 (September 02, 2021)</strong>
+            <ul>
+            <li>Fullscreen Plus is back</li>
+            <li>Split Chat is back</li>
+            <li>New design: mention, reply, new messages, buttons on top message, profile preview, link preview</li>
+            </ul></p>
+
             <h2>Version 1.22 (August 18, 2021)</h2>
   			<p>- Now you don't need refresh page for emoji picker and emotes<br/>- Full API UPDATE to version 3 <a href="https://dev.betterbri.me/">https://dev.betterbri.me/</a></p>
 
@@ -943,12 +959,12 @@ function betterFullScreenPlus(){
 				<h3>Fullscreen Plus #${window.location.href.split('/')[3]}</h3>
 			</div>
 			<div class="body">
-				<iframe src="https://beta.brimelive.com/${window.location.href.split('/')[3]}/chat" frameborder="0" scrolling="no" style="height: 100%;"></iframe>
+				<iframe src="https://brime.tv/${window.location.href.split('/')[3]}/chat" frameborder="0" scrolling="no" style="height: 100%;"></iframe>
 			</div>`;
 			settingsBG.setAttribute("id", "bb-fullscreen-plus-iframe");
 			settingsBG.className = 'bb-fullscreen-box text-center';
-			document.querySelector('#player div').appendChild(settingsBG);
-			document.querySelector('#player div').insertBefore(settingsBG, document.querySelector('#player div').childNodes[0]);
+			document.querySelector('.plyr__video-wrapper').appendChild(settingsBG);
+			document.querySelector('.plyr__video-wrapper').insertBefore(settingsBG, document.querySelector('.plyr__video-wrapper').childNodes[0]);
 		
 			var fullSettingsButton = document.createElement("i");
 			fullSettingsButton.style.cursor = 'pointer';

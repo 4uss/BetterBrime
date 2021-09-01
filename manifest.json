@@ -23,6 +23,6 @@
    "name": "BetterBrime",
    "permissions": [ "*://*.brimelive.com/*", "*://*.betterbri.me/*", "*://*.brime.tv/*"],
    "short_name": "BB",
-   "version": "1.22.1",
+   "version": "1.23.1",
    "web_accessible_resources": ["betterbrime.min.js", "betterbrime.css", "assets/icons/*", "assets/fonts/*" ]
 }
