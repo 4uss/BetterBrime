@@ -217,7 +217,7 @@ setInterval(() => {
         const target = document.querySelector('.plyr__controls')
 
         if (target) {
-            if (!playerexist || !target.hasAttribute('data-maked-observer')) {
+            if (!playerexist || !target.hasAttribute('data-maked-observer')){
                 playerexist = true
                 target.setAttribute('data-maked-observer', '1')
 
@@ -228,10 +228,10 @@ setInterval(() => {
                 document.querySelector('button[data-plyr="fullscreen"]').addEventListener("click", function(e) {
                     if(localStorage.BBFullScreen === 'true'){
 
-						if(document.querySelector('#bb-fullscreen-plus-iframe iframe').src === `https://beta.brimelive.com/${splitcurrentUrl[3]}/chat`){
+						if(document.querySelector('#bb-fullscreen-plus-iframe iframe').src === `https://brime.tv/${window.location.href.split('/')[3]}/chat`){
 							
 						}else{
-							document.querySelector('#bb-fullscreen-plus-iframe iframe').src = `https://beta.brimelive.com/${splitcurrentUrl[3]}/chat`;
+							document.querySelector('#bb-fullscreen-plus-iframe iframe').src = `https://brime.tv/${window.location.href.split('/')[3]}/chat`;
 						}
 
                         if(document.fullscreenElement === null){
@@ -349,21 +349,11 @@ setInterval(() => {
                                     </div> `);
                                 }
                             }
-                            if (img.innerHTML.includes(userData) && localStorage.BBrBackground === 'true') {
-                                for (var i = 0; i < 1; i++) {
-                                    createHightlight(img.innerText)
-                                }
-                            }
                         })
                         Array.from(node.querySelectorAll(".message span[class='m__username']")).forEach(img => {
                             for (var i = 0; i < badgeList.length; i++) {
-                                if(badgeList[i].badges === ''){
-                                    img.innerHTML = img.innerHTML.replace(new RegExp(badgeList[i].nickname + '( |$)', 'g'), `<strong style="color:#${badgeList[i].color}">${badgeList[i].nickname}: </strong>`);
-                                }else{
-                                    img.innerHTML = img.innerHTML.replace(new RegExp(badgeList[i].nickname + '( |$)', 'g'), ` 
-                                    <img alt="${badgeList[i].badges}" title="${badgeList[i].badge_name}" class="chatBadge" bb-type="tooltip-here" style="height: 1.20em; vertical-align: middle;" src="https://cdn.betterbri.me/badges/${badgeList[i].badges}.png"> 
-                                    <strong style="color:#${badgeList[i].color}">${badgeList[i].nickname}: </strong>`);
-                                }
+                                img.innerHTML = img.innerHTML.replace(new RegExp(badgeList[i].nickname + '( |$)', 'g'), ` 
+                                <img alt="${badgeList[i].app_metadata.badges}" title="${badgeList[i].app_metadata.badge_name}" class="chatBadge" bb-type="tooltip-here" style="height: 1.20em; vertical-align: middle;" src="https://cdn.betterbri.me/badges/${badgeList[i].app_metadata.badges}.png"> ${badgeList[i].nickname}`);
                             }
                         })
                         /*Array.from(node.querySelectorAll("span[style='margin-left: -3px;']")).forEach(img => {
@@ -379,6 +369,20 @@ setInterval(() => {
                                 }
                             }
                         })*/
+                        Array.from(node.querySelectorAll("div[class='messages'] div[class='wrapper highlighted'] div[class='message']")).forEach(img => {
+
+                            if (img.innerHTML.includes(userData) && localStorage.BBrBackground === 'true') {
+
+                                for (var i = 0; i < 1; i++) {
+                                    var options = {
+                                        msg: img.querySelector('.m__content').innerText,
+                                        sender: img.querySelector('.m__username').innerText.trim()
+                                    }
+                                    createHightlight(options)
+                                }
+                            }
+                        })
+
                     })
                     if (localStorage.BBdeletedM === 'true') {
                         mutation.removedNodes.forEach(node => {
@@ -601,6 +605,11 @@ setInterval(() => {
 ---------------------------------------------------------------------------------------------*/
 
     if(!document.querySelector('#bb-settings') && splitcurrentUrl[4] != 'chat'){
+        lightModeButton(1)
+        document.querySelector('.bookmark-wrapper.align-items-center.flex-grow-1.d-none.d-lg-flex .nav-item.d-none.d-lg-block span[class="nav-link"] svg').addEventListener("click", function(e) {
+            lightModeButton(0)
+        });
+
         let settingsBB = document.createElement("li");
         settingsBB.setAttribute("id", "bb-settings");
 		settingsBB.style.borderBottom = '1px solid #3b4253';
@@ -658,6 +667,17 @@ setInterval(() => {
 	<div id="bbChangelog" style="">
     <h1>Changelog</h1>
 		<div class="bttv-changelog-releases">
+            <h2>Version 1.24 (September 16, 2021)</h2>\
+            <p><ul>
+            <li>Fixed emote tooltip position</li>
+            <li>Delayed tooltip to show (0.25s)</li>
+            <li>Stream Chat and mentions redesign</li>
+            <li>BetterBrime now works only on brime.tv not any other subsite (support.brime.tv, feedback.brime.tv)</li>
+            <li>Pinned Highlighted - messages now contains Username of viewer that send message</li>
+            <li>Pinned Highlighted - Fixed issue with time looking like this 20:5 when it should look 20:05 😎</li>
+            If u have any suggestions to implement feel free to send it <a href="https://github.com/4uss/BetterBrime/issues">Submit ideas</a>
+            </ul></p>
+
             <h2>Version 1.23 (September 01, 2021)</h2>
   			<p>- BetterBrime is now working with new version of Brime<br/>- As always fixed some bugs<br/>
               <strong>Version 1.23.1 (September 02, 2021)</strong>
@@ -665,6 +685,11 @@ setInterval(() => {
             <li>Fullscreen Plus is back</li>
             <li>Split Chat is back</li>
             <li>New design: mention, reply, new messages, buttons on top message, profile preview, link preview</li>
+            </ul>
+            <strong>Version 1.23.2 (September 12, 2021)</strong>
+            <ul>
+            <li>Replaced Brime Light Mode button with our</li>
+            <li>Design fixes</li>
             </ul></p>
 
             <h2>Version 1.22 (August 18, 2021)</h2>
@@ -919,14 +944,12 @@ setInterval(() => {
 /*--------------------------------------------------------------------------------------------
                                     BetterBrime Extensions
 ---------------------------------------------------------------------------------------------*/
-    function createHightlight(msg) {
-        var today = new Date();
-        var time = today.getHours() + ":" + today.getMinutes();
-        const tempid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    function createHightlight(data) {
         let btn = document.createElement("div");
         btn.innerHTML = `
-        <span class="time">${time}</span>
-        <span class="message">${msg}</span>`;
+        <span class="time">${gimmeTime()}</span>
+        <span class="display-name">${data.sender}:</span>
+        <span class="message">${data.msg}</span>`;
         btn.setAttribute("id", "bb-pinned-highlight");
         btn.addEventListener("click", function(e) {
             this.remove()
@@ -1013,6 +1036,56 @@ function betterFullScreenPlus(){
 	}
 }
 
+function lightModeButton(a){
+
+    if(a === 1){
+        var button = document.querySelector('.bookmark-wrapper.align-items-center.flex-grow-1.d-none.d-lg-flex .nav-item.d-none.d-lg-block');
+        button.innerHTML = button.innerHTML.replace('<a', '<span style="color: #ff5757;cursor: pointer;"').replace('</a>', '</span>');
+    }else{
+
+        if(localStorage.BBLightMode === 'true'){
+            document.body.classList.remove("BetterBrime-Light")
+            localStorage.BBLightMode = 'false'
+            return console.log('Disabled LightMode');
+        }
+        else if(localStorage.BBLightMode === 'false'){
+            document.body.classList.add("BetterBrime-Light")
+            localStorage.BBLightMode = 'true'
+            return console.log('Enabled LightMode');
+        }
+
+    }
+}
+
+setInterval(() => {
+    if(!document.querySelector('button[data-plyr="theatre"]') && document.querySelectorAll('.plyr__controls__item').length >= 6 ){
+        createBetterBrime_theatre(1)
+    }else{
+        return;
+    }
+}, 1000);
+
+function createBetterBrime_theatre(prop){
+    if(prop === 1){
+        var theatre = document.createElement("button");
+        theatre.innerHTML = ``;
+        theatre.type = "button"
+        theatre.setAttribute("data-plyr", "theatre");
+        theatre.innerText = "▰"
+        theatre.className = 'plyr__controls__item plyr__control';
+        theatre.onclick = function() {
+            if(document.body.classList.contains('BetterBrime-theatre')){
+                document.body.classList.remove("BetterBrime-theatre")  
+                window.dispatchEvent(new Event('resize'));
+            }else{
+                document.body.classList.add("BetterBrime-theatre")  
+                window.dispatchEvent(new Event('resize'));
+            }
+        };
+        document.querySelector('.plyr__controls').appendChild(theatre);
+        document.querySelector('.plyr__controls').insertBefore(theatre, document.querySelector('.plyr__controls').childNodes[5]);
+    }
+}
 /*--------------------------------------------------------------------------------------------
                                     BetterBrime Update Data
 ---------------------------------------------------------------------------------------------*/
@@ -1022,10 +1095,6 @@ function betterFullScreenPlus(){
         .then(response => response.json())
         .then(data => emotesList = data)
         .then(logging('chat.emotes', 'Loaded emote set: Global Emotes'));
-    fetch('https://api-staging.betterbri.me/global/badges')
-        .then(response => response.json())
-        .then(data => badgeList = data)
-        .then(logging('chat.badges', 'Loaded badges and assigned them to users.'));
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {

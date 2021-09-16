@@ -44,17 +44,20 @@
 }
 .emoteInfo .tooltiptext {
     visibility: hidden;
-    width: auto;
-    min-width: 120px;
+    width: 120px;
     background-color: var(--bg-dark);
     color: #fff;
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
+    
+    /* Position the tooltip */
     position: absolute;
     z-index: 1;
-    bottom: 125%;
-    left: -35%;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px;
+
     opacity: 0;
     transition: opacity 0.3s;
   }
@@ -71,6 +74,7 @@
   }
   
   .emoteInfo:hover .tooltiptext {
+    transition-delay: 0.25s;
     visibility: visible;
     opacity: 1;
   }
@@ -81,6 +85,9 @@
     top: 0;
     width: 100%;
     z-index: 99998;
+}
+.BetterBrime-Light #bb-pinned-highlight {
+    background-color: rgb(0 0 0 / 34%) !important;
 }
 #bb-pinned-highlight {
     background-color: rgba(255,0,0,.5);
@@ -286,6 +293,13 @@
 body.BetterBrime-Design{
     background-color: var(--bg-darked) !important;
 }
+.BetterBrime-Design .chat__column-header{
+    border-top-color: var(--bg-dark) !important;
+    background: var(--bg-darked)!important;
+}
+.BetterBrime-Design .navbar-sticky .header-navbar.navbar-shadow{
+    box-shadow: none !important;
+}
 .BetterBrime-Design input[type="text"]#message{
     background-color: var(--bg-darked) !important;
 }
@@ -362,6 +376,9 @@ body.BetterBrime-Design{
 .BetterBrime-Design #continue-chat{
     background: var(--bg-dark) !important;
 }
+.BetterBrime-Design.BetterBrime-Light .wrapper.highlighted{
+    background: rgb(171 171 171 / 30%)!important;
+}
 .BetterBrime-Design .wrapper.highlighted {
     background: rgba(255,0,0,.3)!important;
 }
@@ -376,13 +393,20 @@ body.BetterBrime-Design{
     border-radius: 10px;
     padding: .25rem;
 }
+.BetterBrime-Design .i__reply .remove:hover{
+    background-color: var(--bg-darked);
+}
 .BetterBrime-Design .m__content__mention{
-    font-weight: bold;
-    background: unset;
+    padding: 0 0 .25rem 0 !important;
+    font-weight: 500;
+    background: unset !important;
     color: var(--font-color);
 }
 .BetterBrime-Design .m__content__mention:hover{
     background: unset;
+}
+.BetterBrime-Design .m__content__mention:before {
+    content: "@";
 }
 .timestamp{
     font-family: Roboto,sans-serif!important;
@@ -394,7 +418,6 @@ body.BetterBrime-Design{
 }
 
 .BetterBrime-Light .navbar-sticky .header-navbar.navbar-shadow {
-    box-shadow: 0 4px 24px 0 rgb(151 160 169 / 55%)!important;
     border-bottom: 2px solid #b4b7bd;
 }
 .BetterBrime-Light .main-menu .navbar-header .navbar-brand .brand-text{
@@ -787,4 +810,18 @@ body .ui-tooltip {
 .ui-widget-shadow {
     -webkit-box-shadow: 0px 0px 5px #666666;
     box-shadow: 0px 0px 5px #666666;
+}
+
+.BetterBrime-theatre .navbar.header-navbar, 
+.BetterBrime-theatre .main-menu.menu-fixed, 
+.BetterBrime-theatre .content-wrapper .content-body .channelData
+{
+    display: none;
+}
+.BetterBrime-theatre .vertical-layout .app-content.content{
+    margin-left: 0!important;
+}
+.BetterBrime-theatre .content-body .row.channel__column{
+    position: fixed;
+    height: calc(100% - var(--headerHeight));
 }
