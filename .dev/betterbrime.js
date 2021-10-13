@@ -17,14 +17,15 @@ if (!localStorage.fullScreenPlusJSon) {localStorage.fullScreenPlusJSon = JSON.st
 if (!localStorage.getItem(`BBFullScreen-size`)) {let tmpobj = {w: 357,h: 518};localStorage.setItem(`BBFullScreen-size`, JSON.stringify(tmpobj));}
 if (!localStorage.getItem(`BBFullScreen-location`)) {let tmpobj = {x: 0,y: 0};localStorage.setItem(`BBFullScreen-location`, JSON.stringify(tmpobj));}
 
-const site = document.querySelector('.footer')
-const chatContainerEmbed = document.querySelector('.grecaptcha-badge');
 var statusBB = false
 var userData;
 var currentUrl = window.location.href;
 var splitcurrentUrl = currentUrl.split('/');
 
 setInterval(() => {
+    const site = document.querySelector('footer');
+    const chatContainerEmbed = document.querySelector('.grecaptcha-badge');
+
     if (site) {
         if (!statusBB || !site.hasAttribute('betterbrime-loaded')) {
             console.log("%c0", `
@@ -310,11 +311,15 @@ setInterval(() => {
                 if (mutation.type === 'childList') {
                     mutation.addedNodes.forEach(node => {
                         Array.from(node.querySelectorAll(".message span[class='m__content'] span a")).forEach(img => {
+                            if(img.hasAttribute('bb-antispam')) return;
+
+                            img.setAttribute('bb-antispam', 1)
+
                             if(img.href.endsWith('.jpg') === true || img.href.endsWith('.png') === true || img.href.endsWith('.gif') === true || img.href.endsWith('.svg') === true || img.href.endsWith('.jpeg') === true){
                                 img.innerHTML = img.href.replace(new RegExp('^(https?:\\/\\/)?'+ '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+'((\\d{1,3}\\.){3}\\d{1,3}))'+'(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+'(\\?[;&a-z\\d%_.~+=-]*)?'+'(\\#[-a-z\\d_]*)?$','i'),
                                     `<div class="emoteInfo">
                                         ${img.href}
-                                        <span class="tooltiptext p-1" style="text-align:center;left: 0;">
+                                        <span class="tooltiptext p-1" style="text-align:center;left: 0;bottom: 100%;left: 50%;margin-left: -60px;">
                                             <img src="${img.href}" class="img-fluid"/><br/>
                                             <br/><small style="color:#03dac6;">Image Preview</small>
                                         </span>
@@ -322,6 +327,10 @@ setInterval(() => {
                             }
                         })
                         Array.from(node.querySelectorAll(".message span[class='m__content'] span")).forEach(img => {
+                            if(img.hasAttribute('bb-antispam')) return;
+
+                            img.setAttribute('bb-antispam', 1)
+
                             for (var i = 0; i < emotesList.length; i++) {
                                 img.innerHTML = img.innerHTML.replace(new RegExp(emotesList[i].code + '( |$)', 'g'), ` 
                                 <div class="emoteInfo">
@@ -351,9 +360,13 @@ setInterval(() => {
                             }
                         })
                         Array.from(node.querySelectorAll(".message span[class='m__username']")).forEach(img => {
+                            if(img.hasAttribute('bb-antispam')) return;
+
+                            img.setAttribute('bb-antispam', 1)
+
                             for (var i = 0; i < badgeList.length; i++) {
-                                img.innerHTML = img.innerHTML.replace(new RegExp(badgeList[i].nickname + '( |$)', 'g'), ` 
-                                <img alt="${badgeList[i].app_metadata.badges}" title="${badgeList[i].app_metadata.badge_name}" class="chatBadge" bb-type="tooltip-here" style="height: 1.20em; vertical-align: middle;" src="https://cdn.betterbri.me/badges/${badgeList[i].app_metadata.badges}.png"> ${badgeList[i].nickname}`);
+                                img.innerHTML = img.innerHTML.replace(new RegExp(badgeList[i].nickname + '( |$)', 'g'), `
+                                <span class="bb__badge" data-badge="${badgeList[i].app_metadata.badge_name}"></span> ${badgeList[i].nickname}`);
                             }
                         })
                         /*Array.from(node.querySelectorAll("span[style='margin-left: -3px;']")).forEach(img => {
@@ -370,6 +383,9 @@ setInterval(() => {
                             }
                         })*/
                         Array.from(node.querySelectorAll("div[class='messages'] div[class='wrapper highlighted'] div[class='message']")).forEach(img => {
+                            if(img.hasAttribute('bb-antispam')) return;
+
+                            img.setAttribute('bb-antispam', 1)
 
                             if (img.innerHTML.includes(userData) && localStorage.BBrBackground === 'true') {
 
@@ -495,6 +511,10 @@ setInterval(() => {
                                 .then(response => response.json())
                                 .then(data => emotesList = data)
                                 .then(logging('chat.emotes', 'Loaded emote set: Global Emotes'));
+
+                                //
+                                // Dlaczego to tutaj jest?
+                                //
                             fetch('https://api-staging.betterbri.me/global/badges')
                                 .then(response => response.json())
                                 .then(data => badgeList = data)
@@ -641,6 +661,12 @@ setInterval(() => {
     });
     }
     //Settings Body
+    /*
+    //
+    // +Image preview position bug
+    // +New badge system
+    //
+    */
     var settingsBG = document.createElement("div");
     settingsBG.innerHTML = `
 	<div id="header">
@@ -667,7 +693,7 @@ setInterval(() => {
 	<div id="bbChangelog" style="">
     <h1>Changelog</h1>
 		<div class="bttv-changelog-releases">
-            <h2>Version 1.24 (September 16, 2021)</h2>\
+            <h2>Version 1.24 (September 16, 2021)</h2>
             <p><ul>
             <li>Fixed emote tooltip position</li>
             <li>Delayed tooltip to show (0.25s)</li>

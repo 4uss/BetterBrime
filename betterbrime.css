@@ -825,3 +825,29 @@ body .ui-tooltip {
     position: fixed;
     height: calc(100% - var(--headerHeight));
 }
+
+.bb__badge{
+    display: inline-block;
+    min-width: 1.3rem;
+    height: 1.3rem;
+    background-position: center;
+    vertical-align: middle; 
+}
+.bb__badge[data-badge="Supporter"]{
+    cursor: pointer;
+    color: rgb(255,255,255);
+    background: url(https://cdn.betterbri.me/badges/v2/Supporter-black.png) #03dac6;
+    background-size: 1.3rem;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 0.2rem;
+}
+.BetterBrime-Design .commands{
+    background: var(--bg-dark) !important;
+}
+.BetterBrime-Design .command:hover{
+    background: var(--bg-second-dark) !important;
+}
+.BetterBrime-Design.BetterBrime-Light .command:hover{
+    color: var(--font-color) !important;
+}
